@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sweet 18 Letters</title>
+  <style>
+    :root {
+      --bg1: #ff9a9e;
+      --bg2: #fecfef;
+      --card: #fff;
+      --accent: #e75480;
+      --muted: #555;
+      --envelope-color: #fceef6;
+      /* Light romantic pink */
+      --envelope-flap: #e3d3d8;
+      --envelope-shadow: rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Noto Sans', Arial;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .heading {
+      position: absolute;
+      top: 50px;
+      font-family: 'Brush Script MT', cursive;
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: rgba(219, 73, 116, 0.8);
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6);
+      z-index: 10;
+      text-align: center;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6);
+      }
+
+      50% {
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 105, 180, 0.7);
+      }
+    }
+
+    .container {
+      max-width: 960px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(6px);
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      margin-top: clamp(100px, 15vh, 150px);
+      margin-bottom: 100px;
+      z-index: 5;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    p.lead {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .2s ease;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 60;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .sheet {
+      width: 100%;
+      max-width: 820px;
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.18);
+    }
+
+    .sheet header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sheet h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .close {
+      font-size: 18px;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .content {
+      margin-top: 12px;
+    }
+
+    .view {
+      white-space: pre-wrap;
+      line-height: 1.6;
+      font-size: 15px;
+      color: #333;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      min-height: 200px;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .modal footer {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    /* Envelope Design */
+    .envelope-container {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 70;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+    }
+
+    .envelope {
+      width: 320px;
+      height: 220px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .envelope-front {
+      width: 100%;
+      height: 100%;
+      background-color: var(--envelope-color);
+      border-radius: 10px;
+      position: absolute;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+      z-index: 1;
+    }
+
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 110px;
+      z-index: 3;
+      transform-origin: top;
+      transition: transform 1.5s ease-in-out;
+      overflow: hidden;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: #f7a5b3;
+    }
+
+    .envelope.open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 0;
+    }
+
+    .envelope-back-flap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 110px;
+      z-index: 0;
+      clip-path: polygon(0 100%, 100% 100%, 50% 0);
+      background: #f7a5b3;
+    }
+
+    .letter {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: calc(100% - 20px);
+      height: calc(100% - 20px);
+      background-color: white;
+      border-radius: 8px;
+      padding: 15px;
+      transform: translateY(0);
+      transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      line-height: 1.6;
+      overflow-y: auto;
+    }
+
+    .envelope.open .letter {
+      transform: translateY(-200px);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bunny-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      z-index: 4;
+      opacity: 0.8;
+    }
+
+    .bunny-logo svg {
+      fill: #fff;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    .heart-seal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      z-index: 5;
+    }
+
+    .heart-seal svg {
+      fill: #e75480;
+      /* The accent color */
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    /* Style for the inner blank page with design */
+    .letter-page-design {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: calc(100% - 20px);
+      height: calc(100% - 20px);
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+      transform: translateY(0);
+      transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+    }
+
+    .envelope.open .letter-page-design {
+      transform: translateY(-200px);
+      opacity: 1;
+    }
+
+    .romantic-design {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* SVG for romantic design */
+    .romantic-design-svg {
+      width: 60%;
+      height: 60%;
+      opacity: 0.2;
+    }
+
+    .romantic-design-svg path {
+      fill: #e75480;
+      /* Accent color */
+    }
+
+    /* NEW FOOTER STYLES */
+    .site-footer {
+      width: 100%;
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(34, 34, 34, 0.8);
+      /* Dark text for contrast */
+      background: transparent;
+      /* Makes it blend with the body gradient */
+      position: relative;
+      z-index: 5;
+      margin-top: 20px;
+      /* Space above the footer */
+    }
+
+    .site-footer hr {
+      border: 0;
+      height: 1px;
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(219, 73, 116, 0.5), rgba(0, 0, 0, 0)); /* A subtle, gradient separation line */
+      margin: 0 auto 10px;
+      width: 60%;
+    }
+
+    .site-footer .designer-name {
+        font-family: 'Times New Roman', Times, serif; /* Apply Times New Roman to the name */
+        font-weight: bold;
+    }
+
+  </style>
+</head>
+
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="heading"></div>
+
+  <div class="container">
+    <header>
+      <h1>Sweet 18 Letters ❤️</h1>
+      <p class="lead">Click on any number to open the letter.</p>
+    </header>
+
+    <main>
+      <div class="grid" id="lettersGrid"></div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <hr>
+    Copyright &copy; 2025 All rights reserved │ Designed by <span class="designer-name">SUBHANKAR</span>
+  </footer>
+
+  <div class="envelope-container" id="envelopeContainer">
+    <div class="envelope" id="envelope">
+      <div class="envelope-back-flap"></div>
+      <div class="letter-page-design">
+        <!-- SVG for romantic design -->
+        <svg class="romantic-design-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+      </div>
+      <div class="letter"></div>
+      <div class="envelope-front"></div>
+      <div class="envelope-flap">
+        <div class="heart-seal">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="sheet" role="dialog" aria-modal="true">
+      <header>
+        <h2 id="modalTitle">Letter</h2>
+        <button class="close" id="closeBtn">✕</button>
+      </header>
+      <div class="content">
+        <div class="view" id="letterView">(Letter will appear here)</div>
+      </div>
+      <footer>
+        <button id="prev" class="secondary">Previous</button>
+        <button id="next" class="secondary">Next</button>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL = 18;
+    const grid = document.getElementById('lettersGrid');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const letterView = document.getElementById('letterView');
+    const closeBtn = document.getElementById('closeBtn');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const envelopeContainer = document.getElementById('envelopeContainer');
+    const envelope = document.getElementById('envelope');
+    const letterPageDesign = document.querySelector('.letter-page-design');
+    const letterContent = document.querySelector('.letter');
+
+    let current = 1;
+
+    // Add your 18 letters here as plain text
+    const LETTERS = [
+      `
+My Dearest Honey 💖
+
+Do you remember how we first started talking? It honestly feels like a movie. At first I thought you were just a fake account of my friend, but slowly we become friend and I got to know the real you  and I still can’t believe how lucky I am that I did.
+
+Then came that day in Doomdooma. You text me saying you were nearby, but you didn’t even know the place name you only said there was a pond and a yellow gate near your aunty’s house. Somehow I found it, and the moment you stepped out, my heart started racing.
+
+I was waiting outside with my friend when I saw you through the window. That moment is still crystal clear in my head. You came out running, handed me a letter and a rubber band to wear as a bracelet. My chest felt like it would burst then we clicked our first picture, talked for a little while, and then I left for home but you stayed on the phone with me the whole way until I reached. That first meeting, that first impression of you, is carved into my heart forever. Thankyou so much honey for not being a fake id.
+
+With all my love,
+Bunny 💗`,
+
+      `
+My Dearest Honey💖 
+
+Do you remember your second meeting? Our second meeting is still so fresh in my heart, i came near your aunty’s house with the excuse of tuition but the truth is only you I wanted to see. That morning, when I saw you waiting for me with your little cute brother, my happiness was in next level.
+
+We talked and laughed and when we are about to take picture, my phone again started heating up, just like it always does whenever we try to click together but still we managed. i only happens when i am with you i think my phone gets jealous when i am with you. and that photo became so special because both of us were in red. It looked like our dresses matched perfectly. When I looked at it, it honestly felt like we were a real couple. and in one photo with the baby beside us it was like a small family picture that simple moment touched my heart so deeply.
+
+I also remember standing with you at that empty place in front of your aunty's house? that looked like a small jungle. the place was so quiet all around but inside me everything was racing my heart was beating so fast just because you were there beside me. that place became special only because of you, now whenever i go by that place i remember that moments with you.
+
+And then came the third time we met which was just as beautiful as second one. I came with the excuse of a haircut but of course the real reason was you. we met again in that same place, you came with my junior and your sister Jiya and while we were talking Jiya moved a little away giving us our own space. I remember how I was teasing you trying to make you angry just to see your cute expressions.
+
+But the best part was in the end when i started leaving after talking and clicking photo together, you called me from behind and when i turned and suddenly you ran towards me and hugged me tightly. that hug was the cutest, warmest moment of all, it was the first hug of ours. I can still feel that hug in my heart it was soft, sweet, and full of love and coincidently i am wearing same tshirt today when i am writing this letter.
+
+And you know what? I smile every time I think of these memories… hope one day we will look back at these moments and laugh together still holding each other the same way, still wearing matching smiles instead of just matching clothes.
+
+With all my love,
+Bunny 💗`,
+
+
+      `
+My Dearest honey💖,
+
+You know when I think about our favorite memories, one moment always stands out the day we met at Vishal Market. We weren’t really buying anything, just walking around, making fun of everything and everyone. We were silly, carefree, and completely ourselves. It felt like we were in our own little world, and in that moment, nothing else mattered.
+
+But the part I’ll never forget is when we were crossing the road. I held your hand, and suddenly, everything went quiet. Your hand fit so perfectly in mine, and in that small touch, was such a small thing, but for me, it was everything. 
+
+Then, there's the memory of your second birthday. I can't believe how you surprised me. We were all together, and we spent the whole time enjoying and making fun of my vishal. That day when I kissed you, you were so lost your sense of thinking your reaction was just cute. and the hug you gave me. I was feeling so overwhelmed and couldn't even think straight. It was like I was lost in my own thoughts, but when you wrapped your arms around me in that tight hug, everything just stopped. and slowly i clam down. Promise me honey, that you'll hug me with the same warmth and comfort you bring to calm me on my birthday, every time I'm feeling sad, stressed, or tense.
+
+Those two moments the simple act of holding your hand and the comfort of your hug and kiss are my favorite memories because they show me the best of us. They show me the laughter and fun we share, and the deep comfort and love that makes me feel at home with you.
+
+With  all my love,
+Bunny 💗`,
+
+
+
+      `
+ My Dearest Honey💖 
+
+I was taking about our old days and i still remember when we first started talking, you were little rude at staring and I wasnot sure what to think, at that time i was thinking you were a fake id of my friend but slowly as we spent more time together your sweet side started showing. you laughed with me cared in little ways and that made my heart start noticing you in a different way and you began to feel something for me too and you started loving me and I could see it in the way you cared, the way you never gave up and the way you stayed by my side no matter what.
+
+What makes me happiest is that your love doesn't come all at once it grew naturally day by day. you gave us time, you gave us patience, and you gave your heart. And now here we are, completely together. You are my bestest friend my partner and the person who fills my life with lots love and joy, i feel so lucky that you are my partner and you stayed loyal to me and that you never gave up because even after so many ups and downs and now i get to call you mine.
+
+Being with you has shown me how beautiful love can be over time when it grows slowly and naturally, youknow every sweet moment we spend together makes me feel how happy i am, you are my happiness, my favourite my everything and i am so grateful that you started loving me and stayed with me and I will always cherish you and the bond we share.
+
+
+In this letter, I have tried to capture just fraction of the feelings that flood my heart when I think of you. Remember my love for you is endless and I will stand by your side through all of our life journey. You are my greatest blessing my love.
+
+With all my love,
+Bunny 💗`,
+
+
+
+      `
+My Dearest honey💖
+
+There are some days when I miss you so much more, today is one of those days. You’ve become part of my life that no matter where I am or what I’m doing, my brain keep thinking about you. Even when I’m with friends, I feel empty and the reason is you. I imagine every time how beautiful everything would feel if you were with me, laughing and enjoying those little moments together.
+
+Sometimes, when we talk less or after a small fight, my heart still doesn’t stop worrying about you. I keep asking myself did she eat properly, did she sleep on time, is she fine, or is she upset? No matter what, you stay on my mind in every situation.
+
+Every night before I go to bed, the last thought that comes to my mind is you. And when I wake up in the morning, the first thought that comes to me is also you. You are the beginning and the ending of every single day in my life baby girl. 
+
+I miss you in ways I can't fully explain. It’s not just your voice or your smile it’s the way you care and also the stupid question that you ask me , the peace and the happiness that comes with knowing you are mine is undefined. You’ve become more than just a part of my life, you are my whole world. Even when we’re apart, I carry you in my heart always. text me please after you read this letter.
+
+With all my love,
+Bunny 💗`,
+
+
+
+
+      `
+My Dearest honey💖,
+
+I havve been thinking a lot about everything lately, and I want to say something from the heart. what I love most about you is how sweet you are. You have a way of making me feel close to you no matter the distance. I love your kind heart, how you care for me, and how your little messages can bring smile to my face. I love your laugh, your soft voice (mardana voice nhi ), and even your cute jealous side, everything about you feels so special to me.
+
+I love how you balance everything in your life and still make time for us. You make me feel like the luckiest person, even when we are not physically together. I love the way you tease me, habits of asking  the random questions of yours, the way you say good night in anger, and the way you make me miss you in the sweetest way.
+Your laugh comes through the phone like stress reliever your voice calms me when I’m tense , and just seeing your name pop up lights up my whole day.
+Every little thing about you makes my heart melt. You are my sweetest habit, my favorite person, and the most beautiful part of my life, no matter the distance. 💖
+
+Sending you all my love, a million sweet kisses ang hugs. Thankyou for coming into my life 🧸 
+
+With all my love,
+Bunny 💗`,
+
+
+      `
+My Dearest Honey💖,
+
+This letter is for you when you feel alone. just know that you are never alone because as long as I am here, you'll never be. Even if I'm not sitting beside you right now, my heart is always with you. I carry you with me in every thought, in every little moment of my day. whenever you feel lonely, I want you to remember this you are my person. You are the one I love, the one I choose every single day, the one I would do anything for. You are not alone because i'm with you, always wishing I could hold you tight when you feel low, always ready to listen to your words.
+
+I know sometimes life feels heavy, and it can make you feel like no one try to understands you. but I do, and I want to be the place you can rest your heart. I don’t want you to be strong all the time. It's okay to have moments when you feel tired or down. at hat times, lean on me. let me be your safest place, the one who will always reminds you that you're loved and never be forgotten.
+
+Close your eyes and think of me holding your hand. Imagine me looking at you with all the love i have in my eyes. that's how I am, every day, even from far away. you have me, now and always. you are very special to me. If ever you doubt yourself, I will there to remind you of how amazing you are. If you ever feel weak, I will be your strength. If you ever  feel empty, I will fill you with all my love.
+So whenever you feel lonely, I want my voice to be louder in your heart. The voice that says you're loved, you're wanted, you're mine . I'm always here, even in silence, even in distance. you are never, ever alone.
+
+With all my love,
+Bunny 💗`,
+
+
+
+      `
+My Dearest Honey💖,
+
+I was looking at some of your pictures and snaps today, and i couldn't stop myself from smiling. Every time I see your face, even in a small photo, it makes my heart feel so happy. There is something about the way you smile and the way you look at the camera that makes me think about you all the time. I love seeing your natural moments. the snaps where you are laughing, talking, or even you just sit quietly make me feel like I am right there with you. sometimes I look at a single photo again and again and imagine your voice, and your presence. It makes me feel warm inside, and I makes feel like I am holding you in my arms even if I am far away.
+
+
+Even the little things in your photos, like your hands, your smile, your eyes and my personal favorite thirty two hehe stay in my mind. I keep think about all the moments we will share together in the future, and I imagine taking pictures together, laughing together, and making cute memories together that we will always remember.
+
+Sometimes I just sit and scroll though your picture and snap you sent me, and I feel so lucky that you are my girl. every smile, every stupid look, and every moment captured in your pictures and videos reminds me of why I fell in love with you. even if we are not together right now, after watching your photos make me feel close to you. they remind me that you are real not fake id. I look at your snaps and think about holding your hand, hugging you, kissing you nah nah eating you, licking you. I ask for pictures every time i need stressed or low. but most of the time you avoid or forgot to send.
+
+I miss you so much, and I can’t wait for the day when I can see your smile in person and make more memories together. Until then, I will keep looking at your pictures, keeping them close to my heart, and thinking about you every single day.
+
+I love you more than words can say.
+
+With all my love,
+Bunny 💗`,
+
+
+      `
+My Dearest Honey💖 
+
+You know honey sometimes i don’t know how to start because words feel so small compared to how I feel inside when i think about you. I just want to tell you why you are beautiful to me, in the most simple and honest way i can, i remember you asked me this and i avoided that. you’re beautiful when you smile, not just because your face looks cute but because your smile has this power to make me happy no matter whats mood i am in. even when i am not in right mood or tired just by the thought of your smile or teasing me makes me feel lighter. your eyes are beautiful too not because of how they shine but because they show so much emotion. I can even tell when you are happy, when you are shy, when you are excited, or even when you are hiding something I notice that ever since we met and I love that i get to see all those cute sides.
+
+You are beautiful in the way you talk even when you say silly things even when you tease me, even when you get mad,the way you express yourself makes me feel closer to you more. you’re beautiful when you laugh because your laugh isn’t just a sound it’s like this little spark that makes everything better honestly i can’t stop replaying your voice messages when you laugh and sometimes i just imagine your laugh in my head, and it makes me smile without even realizing it.
+
+But your beauty isn’t just in the way you look or the way you sound. what makes you the most beautiful to me is who you are inside. You care for people, you care for me, you always know how to make me feel better and you try too make me feel better, even if it's just a simple “don’t worry” or a silly joke. you’re strong too, you don’t give up easily even when things are tough, you find a way to keep going. That's something I admire about you baby so much.
+
+I think you are beautiful because of your loyalty, i feel safe with you like i can trust you with every part of me and then there is your goofy side the way you mess around, the way you say random things, ask me random questions, the way you laugh at your own jokes. thats one of the cutest things about you because it makes me love the real unfiltered you.
+
+What im trying to say is, yes, you are gorgeous on the inside and outside and i can talk all day about how pretty you are, but the real reason i am so in love with you is because your heart, your soul, your personality they are all so beautiful, you are everything I could ever want, and every single day i keep finding new reasons why you are the most beautiful girl i know.
+
+With all my love,
+Bunny 💗`,
+
+
+
+
+      `
+My Dearest Honey💖, 
+
+honestly honey, have no idea how crazy you make me everytime like It’s hard to put in words sometimes, but I'll try, because you deserve to know that. Whenever I see your photo, I catched myself staring at my phone inn stupid way many times, smiling like a fool, and I don’t even care how silly I look at that time. Your lips, oh bhagwan, your eye , your … they drive me wild ,it feels like they see straight into me, like you can read every hidden thought I never say out loud. And that smile of yours? It makes me weak every single time. I swear, the way your lips curve when you smile could melt the coldest heart in the world, and somehow that smile is mine. do you know how lucky that makes me feel? like the happiest person alive.
+
+I won't lie, one of my favorite things is teasing you, because your reactions are so cute na na cutest. I tease you because I know you will tease me back and then we both end up laughing. i just try to make you blush, just to see that adorable side of you again and honestly I can't stop thinking about kissing you or licking you. that thought alone can makes my heart race. I just want to hold your face gently in my hands, pull you close, and taste the sweetness of your lips. I imagine hugging you so tight that you can feel every heartbeat of mine, and I never want to let you go though i say sometime but i don't mean that its is because of my emotions at the moment.
+
+You are too beautiful, too tasty hehe, and too addictive. you have already taken over my heart and my mind, its something i don't want to undo .The first thought when i wake up with and the last thought I fall asleep is you. even when I am busy, you sneak into my mind out of nowhere and make me smile. I want you to know that every time I look at your pictures, I fall for you again. You drive me crazy in the best possible way.
+ 
+From the person you've a undefined bond with<3 
+
+With all my love,
+Bunny 💗`,
+
+
+
+      `
+My Dearest Honey💖
+
+It’s crazy how you are miles away and you still manage to mess with my head every single day even from a distance, you know exactly how to make me smile, blush, and lose my focus with just some words and don’t think i haven’t noticed how you slip “daddy” into messages, knowing full well what it does to me. you might be far but your little teases still hit me like you’re right here with me.
+
+Sometimes it makes me mad that I can’t reach out to you and pull you into my arms when you are in that mood. I can imagine you biting your lips on the other side of the phone and then you share your dark fantasies, your secrets, your wild little thoughts.... and I swear, it makes the distance feel smaller. like you are whispering them into my ears but more than the teasing, what I love most is the trust you had built with me, you let me see every side of you ,the playful, the bold, the soft, the vulnerable. you havve made me your safe place, and that’s something i will never take lightly, I will protect that part of you with everything Ihave.
+
+I will keep teasing you too. i will still send the texts that make you roll your eyes and smile at the same time. i will still call you out when you act all innocent after dropping a bomb on me. and I will still be the one who listens to your fantasies without judgment, who makes you feel wanted, and who loves you for who you are.
+
+This distance hurt sometimes but it also makes me dream harder. I can seethe day iwill finally have you in front of me again  no screens, no time zones, just us. and on that day, every tease, every whisper, and every moment we havve been waiting for will finally be ours in real life.
+
+Until then, keep teasing me. Keep sharing your thoughts. Keep being you. Because even from a distance, you’re still my favorite trouble, my safe place, and the best part of my day.
+
+With all my love,
+Daddy💗`,
+
+
+
+      `
+My Dearest Honey💖 
+
+You are the kind of person anyone would be love to have in their life and I feel like the luckiest person because i have you. Our bond is something very special to me i admire you so much. To me, you are the sweetest, kindest, and most beautiful person i have ever met.
+
+You are the only person i will never mind losing sleep for, the only person i never get tired of talking and the only one who crosses my mind all through the day. you are the person who can makes me smile without even trying, who can changes my mood with a single word or action.
+
+I’m so grateful to have you in my life. I cherish our beautiful bond every day. Thank you for accepting me for who i am and for loving me with all my flaws. You havee taught me that it's okay to have imperfections. You are the only person I will never regret giving my time, effort, and energy to.
+
+I will always be by your side, be your biggest supporter, your safe place, and your protector. You can always count on me to be there for you,  to encourage you, guide you, and love you more than you can imagine. You are in my heart, and I will cherish you forever. Please keep loving me the way you do. ❤️
+
+With all my love,
+Bunny 💗`,
+
+
+
+
+
+      `
+My Dearest Honey 💖
+
+I was thinking about you today, and I wanted to write down some of the things I admire most about you. It's not just one thing, but a whole list of them that make you who you are, and make me fall for you more every day.
+
+There are so many things I admire about you. The biggest thing I admire about you is your heart.  You are such a kind and caring person, and it shows in everything you do. You make people feel loved and safe, and I feel so grateful to have you in my life. I admire your kindness, the way you care for people, the way you care for me without expecting anything in return. You have this rare ability to make everyone around you feel valued and loved, and I’m so lucky to be the one who gets to experience that every day. 
+
+You go through so much every day handling family problems, doing house work, managing school and tuition and still, you talk to me in the sweetest way. That strength of yours truly inspires me. You never let your struggles change the way you love and care for people, and that makes me respect you even more.
+  
+I admire your patience, your kindness, and your big heart. The way you handle everything with so much grace makes me feel so proud of you. You are strong, you are beautiful inside and out, and you make my world so much brighter just by being in it.
+
+Thank you for being with me. I love you not only for what you are to me, but for the incredible person you are, inside and out..
+ 
+With all my love, 
+Bunny 💗`,
+
+
+
+      `
+My Dearest Honey💖 
+
+I just want to say thank you from my every part of my heart. Thank you thank you so much honey for being with me, for loving me, for care about me . You are the most special person in my life and I feel so lucky every single day to call you mine.
+
+You make my days brighter with just your smile photos and in real too, and you make my nights peaceful with just your voice and naughty text. whenever I see your messages my heart feels happy. When I hear you laugh in voice message i forget all my stress. You have a magic that no one else have and that magic is your specail love and care for me.
+
+Thank you for accepting me the way I am with all mistakes i did. You never make me feel less, instead you make me feel enough, You have given me love, care, and a home inside your heart, and I can never stop being grateful for that.
+
+I love the way you share eventhings even your smallest moments with me. I love how you care about my happiness more than your own sometimes. I love how you support me,something guide me ( me jhada krta hu guide ) and stand by me when I feel low. Your love is my strength and your presence is my comfort.I will never stop loving you. i will always appreciate everything you do for me no matter. You are my happiness, my peace, my reason to smile. Thank you for being you. Thank you for being my girl❤️. 
+
+With all my love,
+Bunny 💗`,
+
+
+
+
+
+      `
+My Dearest Honey💖
+ 
+I don't know where to start, i just want to say sorry from the bottom of my heart. I know I have hurt you so many times, and it breaks me to think about all the times you cried because of me, you didn’t deserve any of that. you are the most special person in my life and the thought that I made you sad makes me feel really bad.
+
+I know I haven't been able to give you enough time. For the last three months I am working on this writing codes and trying to focus on studies. In between all of this we had many fights, many  misunderstandings. Sometimes we both got angry, sometimes we stopped talking and still I know that things are not completely fine. Even today when I'm writing this letter you're still angry with me because of that Hot Wheels cars and i know its my fault completely I just want to say Iam really sorry for everything for not giving you time for not being there when you needed me and for making you feel ignored. I never did it on purpose I'm just trying to manage everything together.
+
+Even after everything after every fight every misunderstanding, you still love me, care for me and stay by my side. that shows how pure and amazing your heart is, i am so so so much lucky to have a amazing person like you. i promise babygirl i will try my best to never hurt you again. i want to be someone who makes you happy every single day, someone you can trust completely, someone you can always rely on. you mean the everything to me and losing my bestest friend is the last thing I could ever imagine.
+
+I will do everything to make you happy, to show you how much i truly love you and to make you smile like you deserve.i hope you will forgive me for what i did in past, for everytime i maked you cry for me because i can't stand the thought of you being sad because of me.
+
+I love you more than words can say, and I am so sorry for hurting you. You are my heart, my happiness, and my everything. Please love me always like you do. 
+
+With all my love,
+Bunny 💗`,
+
+
+
+
+
+      `
+My Dearest Honey💖
+
+I was thinking about us today, and I realized I could spend forever telling you why I love you. there are many but its your 18th birthday, So here’s a start… 18 reasons why my heart belongs to you:
+
+I love your smile it can light up my mood.
+I love the way your eyes light up when you are happy.
+I love your laugh it makes me laugh too.
+I love the way you care about me, even in small ways.
+I love your loyalty, I can trust you with my heart completely. 
+I love your silly and stupid questions and the way you tease me.
+I love how you always know what to say when I feel down.
+I love your kindness it makes me admire you even more.
+I love the way you listen to me, really listen, when I need to talk.
+I love your hugs they make me feel safe and loved.
+I love my favorite thirty two it makes me excited just by thinking about it.
+I love the way you dream, and how you make me dream with you.
+I love your voice it feels like home when I hear it.
+I love your courage ,the way you say you are going to break my mouth.
+I love how you believe in me, even when I doubt myself.
+I love the little messages or calls from you that make me smile anytime.
+I love the way you try to make ordinary moments special.
+I love you simply for who you are, for being you perfect, imperfect, and completely amazing.
+
+
+Every day I find new reasons to love you, and I know I will never run out. You are my heart, my happiness, my home. I feel so lucky to have you in my life, and I want you to know that my love for you grows stronger every single day.
+
+With all my love,
+Bunny 💗`,
+
+
+      `My Dearest Honey 💖
+
+Sometimes when i close my eyes and imagine our future before sleep and every picture of it makes me smile we are together in same house happily, i see us celebrating not just birthday but every single moments together. I dream of us laughing together on your 21st, holding hands on your 25th, still teasing each other at 30 and growing side by side through every stage of life.
+
+I know this 18th birthday its so special for you and I am really sorry if I can’t be there on this day. Please forgive me my love. It hurts me too but I promise you one thing  we will celebrate together one day just you and me no one else, where we will cut the cake for both your first and second  birthday and those memories will be only ours.
+
+Even if I can’t be there right now, my heart is with you in every single second. Imagine me holding your hand, whispering happy birthday haoney in your ear and looking into your eyes with all the love i have for you, that is how close you are to me no matter the distance.
+
+One day when will we finally celebrate all our birthdays together, i know we will look back at this moment and smile because even though I missed being there now, my love will never left you for a second. you are my today, my tomorrow, and every birthday of my life.
+
+With all my love,
+Bunny 💗
+
+`,
+
+
+
+
+      `
+My Dearest Honey💖 
+
+To be honest honey with you i never have to pretend something or act like someone i am not. i can be unfiltered self with all my moods, flaws and weirdness, and you still make me feel loved and accepted. that is one of the greatest gifts you have ever given me, and it’s something I will carry with me always.
+
+I keep thinking about how far we had come together. we have shared so much things together so much dark fantasy. i know will not be able to express this with  any other person. You have there in my laughter and in my tears, and the way you have stood beside me makes me believe that true friendship really is one of the strongest bonds in the world.
+
+Now you are stepping into this new chapter, you are turning into 18, and I just want you to know I proud am of you. watching my honey grow into this beautiful, strong, and kind hearted girl has been such a blessing. You’ve become someone who inspires me, someone I look up to, and someone I know will do amazing things in life. At yours 18th, the world is wide open for you to explore, to chase your dreams.
+
+And even though life will keep changing, one thing i can see us at 30, laughing at the same stupid jokes, talking about the same memories, teasing you and still being each other’s safe space. That thought alone makes me so excited for the future, because no matter how much we grow up, I know I will never lose you, i never want to lose you .
+
+So today, on your 18th birthday, I don’t just celebrate your age. I celebrate you. you are the friend who feels like my family, the girl who has filled my life with lots of love and happiness. I am so grateful to having a girl like you in my life, and I can’t wait to see all the incredible things that await you in the years ahead.
+ones again Happy Birthday, honey.
+
+With all my love,
+Bunny 💗`
+
+    ];
+
+    function renderGrid() {
+      grid.innerHTML = '';
+      for (let i = 1; i <= TOTAL; i++) {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.innerHTML = `<div class="num">Letter ${i}</div><div class="meta">Click to open</div>`;
+        el.addEventListener('click', () => openEnvelope(i));
+        grid.appendChild(el);
+      }
+    }
+
+    function openEnvelope(i) {
+      current = i;
+      envelopeContainer.style.display = 'flex';
+      envelope.classList.remove('open');
+      letterPageDesign.style.display = 'flex'; // Show the design page
+      letterContent.style.display = 'none'; // Hide the content page initially
+
+      // Listen for the end of the flap animation
+      const onFlapEnd = () => {
+        envelope.removeEventListener('transitionend', onFlapEnd);
+        // A small delay after flap opens before the pages start moving
+        setTimeout(() => {
+          openLetterInModal();
+        }, 500); // Wait for a moment before sliding the page
+      };
+      envelope.addEventListener('transitionend', onFlapEnd);
+
+      // A small delay to ensure CSS transition resets before starting
+      setTimeout(() => {
+        envelope.classList.add('open');
+      }, 50);
+    }
+
+    function openLetterInModal() {
+      envelopeContainer.style.display = 'none';
+      modal.classList.add('show');
+      modalTitle.textContent = `Letter ${current}`;
+      letterView.textContent = LETTERS[current - 1] || '(Letter not added yet)';
+    }
+
+    function closeModal() {
+      modal.classList.remove('show');
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (current > 1) {
+        openEnvelope(current - 1);
+      }
+    });
+    nextBtn.addEventListener('click', () => {
+      if (current < TOTAL) {
+        openEnvelope(current + 1);
+      }
+    });
+
+    renderGrid();
+
+    // Canvas-based background animations
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const particleColors = ['#ff9a9e', '#fecfef', '#e75480', '#fff'];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+      for (let i = 0; i < 50; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 1,
+          speedX: (Math.random() - 0.5) * 0.5,
+          speedY: (Math.random() - 0.5) * 0.5,
+          color: particleColors[Math.floor(Math.random() * particleColors.length)],
+          opacity: Math.random() * 0.8 + 0.2 // Initial opacity
+        });
+      }
+    }
+
+    function updateParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        // Loop particles back to the screen
+        if (p.x > canvas.width || p.x < 0) p.speedX *= -1;
+        if (p.y > canvas.height || p.y < 0) p.speedY *= -1;
+      }
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      updateParticles();
+      drawParticles();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', () => {
+      resizeCanvas();
+      createParticles();
+      animate();
+    });
+  </script>
+</body>
+
+
+</html>

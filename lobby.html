@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            overflow: hidden; /* Prevent scrollbars from falling hearts */
+        }
+        
+        .handwriting {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Falling Hearts Animation */
+        .heart {
+            position: absolute;
+            top: -10vh;
+            color: #ec4899; /* Tailwind pink-500 */
+            opacity: 0.8;
+            animation: fall linear forwards;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* Button Hover Glow */
+        .glow-btn:hover {
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-200 via-red-100 to-rose-300 min-h-screen flex items-center justify-center relative">
+
+    <!-- Background Hearts Container -->
+    <div id="hearts-container" class="absolute inset-0 w-full h-full overflow-hidden"></div>
+
+    <!-- Main Content Card -->
+    <div class="glass-card relative z-10 p-8 md:p-12 rounded-3xl shadow-2xl max-w-md w-full mx-4 text-center transform transition-all duration-500 hover:scale-[1.02]">
+        
+        <!-- Decorative Icon -->
+        <div class="mb-6 flex justify-center">
+            <div class="bg-pink-100 p-4 rounded-full shadow-inner">
+                <i data-lucide="heart" class="w-10 h-10 text-rose-500 fill-current animate-pulse"></i>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="handwriting text-5xl md:text-6xl text-rose-600 mb-2 font-bold">My Love</h1>
+        <p class="text-gray-600 italic mb-10 text-lg">Choose where you want to go...</p>
+
+        <!-- Buttons Container -->
+        <div class="flex flex-col gap-5">
+            
+            <!-- Button 1: emotion.html -->
+            <a href="emotion.html" class="group relative overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-pink-100">
+                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-400 to-rose-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div class="p-4 flex items-center justify-between px-6">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-pink-50 p-2 rounded-full text-pink-500 group-hover:bg-pink-100 transition-colors">
+                            <i data-lucide="heart-handshake" class="w-5 h-5"></i>
+                        </span>
+                        <span class="font-semibold text-gray-700 group-hover:text-rose-600 transition-colors">Love & Feelings</span>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            <!-- Button 2: 18letter.html (Ensure your file is named EXACTLY this) -->
+            <a href="18letter.html" class="group relative overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-pink-100">
+                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-400 to-rose-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div class="p-4 flex items-center justify-between px-6">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-pink-50 p-2 rounded-full text-pink-500 group-hover:bg-pink-100 transition-colors">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </span>
+                        <span class="font-semibold text-gray-700 group-hover:text-rose-600 transition-colors">Letters</span>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            <!-- Button 3: memory.html -->
+            <a href="memory.html" class="group relative overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-pink-100">
+                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-400 to-rose-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div class="p-4 flex items-center justify-between px-6">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-pink-50 p-2 rounded-full text-pink-500 group-hover:bg-pink-100 transition-colors">
+                            <i data-lucide="image" class="w-5 h-5"></i>
+                        </span>
+                        <span class="font-semibold text-gray-700 group-hover:text-rose-600 transition-colors">Our Memories</span>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-10 text-rose-400 text-sm">
+            <p>Forever & Always</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Falling Hearts Animation Logic
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Randomize properties
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // 4-7 seconds
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px'; // 10-30px size
+            
+            // Add heart character
+            heart.innerHTML = '❤';
+            
+            document.getElementById('hearts-container').appendChild(heart);
+            
+            // Remove after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 7000);
+        }
+
+        // Create a new heart every 300ms
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>

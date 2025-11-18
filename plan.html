@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Perfect Date ❤️</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-180deg); }
+            70% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+        .handwritten {
+            font-family: 'Dancing Script', cursive;
+        }
+        .floating {
+            animation: float 3s infinite ease-in-out;
+        }
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            animation: sparkle 1.5s infinite;
+        }
+        .timeline-item {
+            transition: transform 0.3s ease;
+        }
+        .timeline-item:hover {
+            transform: scale(1.02);
+        }
+        .glow {
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.8);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #ffe6e6 0%, #ffb6c1 100%);
+        }
+        .sticker {
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .background-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Floating Hearts Background -->
+    <div id="hearts-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Welcome Message -->
+        <div class="text-center mb-16 floating">
+            <h1 class="handwritten text-4xl md:text-6xl text-pink-600 glow mb-4">
+                Welcome, my Love! 💝
+            </h1>
+            <p class="handwritten text-2xl md:text-3xl text-pink-500">
+                Today is all about you & me, our perfect date, and making the most beautiful memories together!
+            </p>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="text-center mb-12 bg-white/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 class="handwritten text-2xl text-pink-600 mb-2">Counting the moments until our perfect date! ⏳💞</h2>
+           
+        </div>
+
+        <!-- Timeline -->
+        <div class="max-w-3xl mx-auto space-y-8">
+            <!-- Morning Surprise -->
+            <div class="timeline-item bg-white/70 rounded-xl p-6 backdrop-blur-sm">
+                <h3 class="handwritten text-2xl text-pink-600 mb-2">🌅 Morning Football Day</h3>
+                <p class="text-gray-700">Get ready for the most experience of your life on the pitch..</p>
+                <button onclick="revealMessage(this, '🌅', 'Good morning, my sunshine! 🌞 Wake up to my love and warmth!')" 
+                        class="mt-4 px-4 py-2 bg-pink-400 text-white rounded-full hover:bg-pink-500 transition-colors">
+                    Reveal Morning Message 💌
+                </button>
+            </div>
+
+            <!-- Breakfast Together -->
+            <div class="timeline-item bg-white/70 rounded-xl p-6 backdrop-blur-sm">
+                <h3 class="handwritten text-2xl text-pink-600 mb-2">☕ Breakfast Together</h3>
+                <p class="text-gray-700">Sharing sweet moments over your favorite breakfast.</p>
+                <button onclick="revealMessage(this, '🍳', 'Let\'s start our day with sweet moments and your favorite breakfast! ☕️')" 
+                        class="mt-4 px-4 py-2 bg-pink-400 text-white rounded-full hover:bg-pink-500 transition-colors">
+                    Read Love Note 💝
+                </button>
+            </div>
+
+            <!-- Rest of the timeline items -->
+            <div class="timeline-item bg-white/70 rounded-xl p-6 backdrop-blur-sm">
+                <h3 class="handwritten text-2xl text-pink-600 mb-2">🌆 Romantic Outing</h3>
+                <p class="text-gray-700">Walking hand in hand, creating beautiful memories together.</p>
+                <button onclick="revealMessage(this, '🌸', 'Every step with you is a dance in paradise! 🌺')" 
+                        class="mt-4 px-4 py-2 bg-pink-400 text-white rounded-full hover:bg-pink-500 transition-colors">
+                    Discover Our Adventure 🌟
+                </button>
+            </div>
+
+            <div class="timeline-item bg-white/70 rounded-xl p-6 backdrop-blur-sm">
+                <h3 class="handwritten text-2xl text-pink-600 mb-2">🎁 A Special Gift</h3>
+                <p class="text-gray-700">A surprise that will make your heart smile.</p>
+                <button onclick="revealMessage(this, '🎁', 'A small token of my endless love for you! 💝')" 
+                        class="mt-4 px-4 py-2 bg-pink-400 text-white rounded-full hover:bg-pink-500 transition-colors">
+                    Open Your Gift 🎀
+                </button>
+            </div>
+
+            <div class="timeline-item bg-white/70 rounded-xl p-6 backdrop-blur-sm">
+                <h3 class="handwritten text-2xl text-pink-600 mb-2">🍽️ Candlelight Dinner</h3>
+                <p class="text-gray-700">Dining under the stars, just you and me.</p>
+                <button onclick="revealMessage(this, '🕯️', 'Let\'s make this evening magical together! ✨')" 
+                        class="mt-4 px-4 py-2 bg-pink-400 text-white rounded-full hover:bg-pink-500 transition-colors">
+                    See Our Evening Plans 🌙
+                </button>
+            </div>
+
+            <div class="timeline-item bg-white/70 rounded-xl p-6 backdrop-blur-sm">
+                <h3 class="handwritten text-2xl text-pink-600 mb-2">💋 Ending the Night</h3>
+                <p class="text-gray-700">A perfect ending to our perfect day.</p>
+                <button onclick="revealMessage(this, '💖', 'Sweet dreams, my love! Until we meet again in my dreams! 💫')" 
+                        class="mt-4 px-4 py-2 bg-pink-400 text-white rounded-full hover:bg-pink-500 transition-colors">
+                    Read Goodnight Message 🌙
+                </button>
+            </div>
+        </div>
+
+        <!-- Final Love Confession Button -->
+        <div class="text-center mt-16">
+            <button onclick="showConfession()" class="px-8 py-4 bg-pink-500 text-white rounded-full text-xl hover:bg-pink-600 transition-transform hover:scale-105 shadow-lg">
+                Click here for a surprise! 🎁
+            </button>
+        </div>
+    </div>
+
+    <!-- Confession Modal -->
+    <div id="confession-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-lg mx-4 relative">
+            <button onclick="hideConfession()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">✕</button>
+            <div class="handwritten text-3xl text-pink-600 text-center">
+                I love you, my honey ! 🥰<br>
+                You are my forever, and I can't wait for all our future dates together! 💖
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = ['❤️', '💖', '💝', '💕', '💗'][Math.floor(Math.random() * 5)];
+            heart.className = 'absolute text-2xl';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = -30 + 'px';
+            heart.style.opacity = '0.6';
+            heart.style.transform = `scale(${0.5 + Math.random()})`;
+            document.getElementById('hearts-container').appendChild(heart);
+
+            const animation = heart.animate([
+                { transform: `translate(0, 0) rotate(0deg) scale(${0.5 + Math.random()})` },
+                { transform: `translate(${-50 + Math.random() * 100}px, ${window.innerHeight}px) rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random()})` }
+            ], {
+                duration: 4000 + Math.random() * 3000,
+                easing: 'linear'
+            });
+
+            animation.onfinish = () => heart.remove();
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 300);
+
+        // Updated reveal message function with sticker
+        function revealMessage(button, sticker, message) {
+            const container = button.parentElement;
+            
+            // Create message container
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'flex flex-col items-center mt-4 space-y-4';
+            
+            // Create sticker element
+            const stickerDiv = document.createElement('div');
+            stickerDiv.className = 'sticker text-8xl mb-4 relative';
+            stickerDiv.textContent = sticker;
+            
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'handwritten text-xl text-pink-500 text-center';
+            messageDiv.textContent = message;
+            
+            // Assemble the elements
+            messageContainer.appendChild(stickerDiv);
+            messageContainer.appendChild(messageDiv);
+            
+            // Replace button with message container
+            button.replaceWith(messageContainer);
+            
+            // Add sparkles around the sticker
+            createSparkles(stickerDiv);
+        }
+
+        // Create sparkle effect
+        function createSparkles(element) {
+            for (let i = 0; i < 6; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.innerHTML = '✨';
+                sparkle.className = 'absolute text-2xl sparkle';
+                sparkle.style.left = `${Math.random() * 100}%`;
+                sparkle.style.top = `${Math.random() * 100}%`;
+                element.appendChild(sparkle);
+            }
+        }
+
+        // Confession modal functions
+        function showConfession() {
+            const modal = document.getElementById('confession-modal');
+            modal.style.display = 'flex';
+            gsap.from(modal.querySelector('div'), {
+                scale: 0,
+                rotation: -10,
+                opacity: 0,
+                duration: 0.5
+            });
+        }
+
+        function hideConfession() {
+            const modal = document.getElementById('confession-modal');
+            modal.style.display = 'none';
+        }
+
+        // Countdown timer
+        function updateCountdown() {
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 3); // Example: 3 days from now
+            
+            const now = new Date();
+            const difference = targetDate - now;
+            
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown').innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Initialize scroll animations
+        gsap.utils.toArray('.timeline-item').forEach(item => {
+            gsap.from(item, {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top bottom-=100",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+    </script>
+</body>
+</html>
