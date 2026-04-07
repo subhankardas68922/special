@@ -854,6 +854,14 @@
         window.showPopUp = (data, id) => {
             activeData = data;
             activeId = id;
+
+            let popDateHtml = "";
+            if (data.createdAt) {
+                const d = new Date(data.createdAt);
+                const popDateStr = d.toLocaleString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+                popDateHtml = `<div style="text-align: center; font-family: 'Nunito', sans-serif; font-size: 0.85rem; color: #a0aec0; margin-top: 1rem;">Saved on ${popDateStr}</div>`;
+            }
+
             const detailModal = document.getElementById('detailModal');
             const detailContent = document.getElementById('detailContent');
             detailContent.innerHTML = `
@@ -865,6 +873,7 @@
                         <div class="b-text">${data.text}</div>
                         ${data.signature ? `<div class="sign">${data.signature}</div>` : ''}
                     </div>
+                    ${popDateHtml}
                     
                     <div style="display:flex; justify-content: space-between; align-items:center; margin-top: 1.5rem; border-top: 1px dashed rgba(217, 93, 57, 0.1); padding-top: 1.2rem; flex-wrap: wrap; gap: 0.5rem;">
                         <div class="del-link" style="padding-top:0; border-top:0; margin-top:0;" onclick="handleDeleteClick('${id}')">
