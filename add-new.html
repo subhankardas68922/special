@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story 💌</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;700&family=Shrikhand&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+
+    <style>
+        /* ----- PREMIUM HEART SEQUENCE LOADER ----- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fdf6e3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loader-grid-paper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(217, 93, 57, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(217, 93, 57, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 2;
+            animation: moveGrid 20s linear infinite;
+        }
+        
+        @keyframes moveGrid {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+
+        .loader-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loading-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: #D95D39;
+            text-transform: none;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.6);
+            min-height: 2.5rem;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        .heart-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .loader-heart-item {
+            width: 38px;
+            height: 38px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-svg {
+            width: 38px;
+            height: 38px;
+            position: absolute;
+            stroke-width: 1.2;
+            stroke: #D95D39;
+            overflow: visible;
+        }
+
+        .heart-border {
+            fill: none;
+            opacity: 0.25;
+        }
+
+        .heart-filled {
+            fill: #D95D39;
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 0.1s linear;
+            z-index: 2;
+        }
+
+        .heart-filled.completed {
+            filter: drop-shadow(0 0 4px rgba(217, 93, 57, 0.5));
+            animation: popHeart 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popHeart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        .percentage {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-top: 10px;
+            color: #D95D39;
+        }
+
+        .is-active {
+            animation: pulse 0.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(217, 93, 57, 0.2)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(217, 93, 57, 0.5)); }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- CUSTOM SCROLLBAR --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #fdf6e3;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #EE964B;
+            border-radius: 10px;
+            border: 2px solid #fdf6e3;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D95D39;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #fdf6e3;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: #4a5568;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #ffb3e6, transparent),
+                radial-gradient(2px 2px at 40px 70px, #ffe066, transparent),
+                radial-gradient(1px 1px at 90px 40px, #87ceeb, transparent),
+                radial-gradient(1px 1px at 130px 80px, #98fb98, transparent);
+            background-size: 200px 100px;
+            animation: twinkle 3s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .grid-paper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 182, 193, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 182, 193, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        .page-container {
+            position: relative;
+            z-index: 10;
+            padding: 2.5rem 1.2rem 4rem 1.2rem;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- SIMPLE HEADER --- */
+        .header {
+            margin-bottom: 2rem;
+            text-align: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .hand-text {
+            display: block;
+            color: #EE964B;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .main-title {
+            font-family: 'Shrikhand', cursive;
+            color: #D95D39;
+            font-size: clamp(1.8rem, 8vw, 2.5rem); /* Responsive title */
+            font-size: clamp(2rem, 10vw, 3rem);
+            line-height: 1.1;
+        }
+
+        /* --- SMALLER & RED ADD BUTTON --- */
+        .add-yours-btn {
+            background: #D95D39;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: clamp(0.85rem, 3vw, 1rem); /* Better scaling */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(217, 93, 57, 0.15);
+            margin-bottom: 2.5rem;
+            z-index: 20;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .add-yours-btn:active {
+            transform: scale(0.94) translateY(2px);
+        }
+
+        .add-yours-btn:hover {
+            background: #EE964B;
+            transform: scale(1.05) translateY(-2px);
+        }
+
+        .add-yours-btn .material-icons-round {
+            font-size: 1.1rem;
+        }
+
+        /* --- SECTION LIST --- */
+        #messagesContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .section-item {
+            background: white;
+            padding: 1.1rem 1.4rem;
+            border-radius: 16px; /* Slightly smoother corners */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(217, 93, 57, 0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .section-item:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 35px rgba(217, 93, 57, 0.12);
+        }
+
+        .section-item:active {
+            transform: scale(0.97);
+        }
+
+        .icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            color: #D95D39;
+        }
+
+        .label {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.4rem, 4vw, 1.7rem); /* More responsive text */
+            font-weight: 600;
+            color: #333;
+        }
+
+        .s-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* --- MODALS --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(253, 246, 227, 0.92);
+            backdrop-filter: blur(12px) saturate(180%);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal.active {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-inner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            min-height: 100%;
+            width: 100%;
+            padding-bottom: 2rem;
+        }
+
+        .important-card-popup {
+            background: white;
+            border-radius: 32px;
+            padding: 2.2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 30px 60px rgba(217, 93, 57, 0.15);
+            position: relative;
+            animation: cardPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        @keyframes cardPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(40px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .h-icon {
+            width: 44px;
+            height: 44px;
+            background: #D95D39;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .h-text {
+            font-family: 'Shrikhand', cursive;
+            color: #D95D39;
+            font-size: 1.6rem;
+        }
+
+        .inner-box {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(217, 93, 57, 0.2);
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+
+        .salut {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            color: #D95D39;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .b-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.45rem;
+            line-height: 1.5;
+            color: #444;
+            white-space: pre-wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .sign {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            color: #D95D39;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            color: #EE964B;
+            cursor: pointer;
+            font-size: 2rem;
+            background: none;
+            border: none;
+        }
+
+        .del-link {
+            color: #ff6b6b;
+            cursor: pointer;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed rgba(217, 93, 57, 0.1);
+            margin-top: 1.5rem;
+        }
+
+        /* FORM CARDS */
+        .form-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(217, 93, 57, 0.2);
+            position: relative;
+            margin: auto;
+        }
+
+        .f-input,
+        .f-textarea {
+            width: 100%;
+            background: #fdf6e3;
+            border: 2.5px dashed #EE964B;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            outline: none;
+        }
+
+        .f-textarea {
+            min-height: 160px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            resize: none;
+        }
+
+        .s-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #D95D39;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Shrikhand', cursive;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .error-msg {
+            font-family: 'Caveat', cursive;
+            color: #D95D39;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* Falling Hearts */
+        .heart {
+            position: fixed;
+            top: -5vh;
+            color: #D95D39;
+            pointer-events: none;
+            z-index: 5;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 5rem;
+            font-family: 'Caveat', cursive;
+            color: #b0b8c8;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- PREMIUM HEART SEQUENCE LOADER -->
+    <div id="loader">
+        <div class="loader-grid-paper"></div>
+        <div class="loader-container">
+            <div class="loading-text" id="loadingText">Gathering stars... ✨</div>
+            <div class="heart-bar" id="heartBar"></div>
+            <div class="percentage" id="percentText">0%</div>
+        </div>
+    </div>
+
+    <div class="app">
+        <div class="stars-bg"></div>
+        <div class="grid-paper"></div>
+
+        <div class="page-container">
+            <header class="header">
+                <span class="hand-text">handwritten memories of us...</span>
+                <h1 class="main-title">Our Story 💕</h1>
+            </header>
+
+            <button class="add-yours-btn" onclick="toggleAddModal(true)"><span class="material-icons-round">edit</span>
+                Add Yours</button>
+
+            <div id="messagesContainer"></div>
+            <footer>Forever & Always ✨</footer>
+        </div>
+    </div>
+
+    <!-- DETAILS MODAL -->
+    <div class="modal" id="detailModal">
+        <div class="modal-inner" id="detailContent"></div>
+    </div>
+
+    <!-- ADD MODAL -->
+    <div class="modal" id="addModal">
+        <div class="modal-inner">
+            <div class="form-card">
+                <button class="close-btn" onclick="toggleAddModal(false)"><span
+                        class="material-icons-round">close</span></button>
+                <h2 id="modalTitle"
+                    style="font-family: 'Shrikhand', cursive; color: #D95D39; text-align: center; margin-bottom: 2rem; font-size: 2rem;">
+                    New Page</h2>
+
+                <input type="text" id="secTitle" class="f-input" placeholder="Page Title ">
+                <input type="text" id="secSalutation" class="f-input" placeholder="Salutation (Optional)">
+                <textarea id="secPara" class="f-textarea" placeholder="Start writing something special..."></textarea>
+                <input type="text" id="secSign" class="f-input" placeholder="Signature (Optional)">
+
+                <button class="s-btn" id="sealButton" onclick="addSection()">Seal Page ✨</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSWORD MODAL -->
+    <div class="modal" id="passModal">
+        <div class="modal-inner">
+            <div class="form-card" style="max-width: 320px; text-align: center;">
+                <button class="close-btn" onclick="togglePassModal(false)"><span
+                        class="material-icons-round">close</span></button>
+                <h3 style="font-family: 'Shrikhand', cursive; color: #D95D39; margin-bottom: 1rem;">Admin Only</h3>
+                <p style="font-family: 'Caveat', cursive; font-size: 1.4rem; margin-bottom: 1.5rem;">Enter password to
+                    remove this memory.</p>
+
+                <input type="password" id="delPass" class="f-input" placeholder="Enter Password"
+                    style="text-align: center; border-style: solid;">
+                <div id="passError" class="error-msg">Incorrect password. Unable to delete.</div>
+
+                <button class="s-btn" id="verifyBtn" onclick="verifyAndDelete()" style="padding: 0.4rem 1.2rem; font-size: 0.85rem; width: auto; margin: 0 auto; display: block;">Verify & Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const heartBar = document.getElementById('heartBar');
+            const percentText = document.getElementById('percentText');
+            const loadingText = document.getElementById('loadingText');
+            const totalHearts = 7;
+            const duration = 1500;
+            const frameRate = 30;
+            const totalFrames = (duration / 1000) * frameRate;
+            let currentFrame = 0;
+
+            const messages = [
+                { thresh: 0, text: 'Gathering stars... ✨' },
+                { thresh: 40, text: 'Folding letters... 💌' },
+                { thresh: 75, text: 'Preparing memories... 💖' },
+                { thresh: 94, text: 'Almost there... 🎀' }
+            ];
+
+            const heartPath = "M11 21.5 C11 21.5 2 13.5 4 7 C5 3 9.5 2.5 11.5 6 C11.5 6 14.5 1 19.5 4 C23 6.5 19 14 11 21.5 Z";
+            
+            for (let i = 0; i < totalHearts; i++) {
+                const heartContainer = document.createElement('div');
+                heartContainer.className = 'loader-heart-item';
+                heartContainer.innerHTML = `
+                    <svg class="heart-svg heart-border" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="${heartPath}"></path>
+                    </svg>
+                    <svg class="heart-svg heart-filled" id="fill-${i}" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="${heartPath}"></path>
+                    </svg>
+                `;
+                heartBar.appendChild(heartContainer);
+            }
+
+            let currentMsgIndex = 0;
+
+            function animateLoading() {
+                if (currentFrame <= totalFrames) {
+                    const t = currentFrame / totalFrames;
+                    const easedProgress = t * (2 - t);
+                    const progressMath = Math.min(Math.round(easedProgress * 100), 100);
+                    const progress = progressMath;
+                    percentText.innerText = progress + '%';
+
+                    let nextMsgIndex = currentMsgIndex;
+                    for (let i = messages.length - 1; i >= 0; i--) {
+                        if (progress >= messages[i].thresh) {
+                            nextMsgIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (nextMsgIndex !== currentMsgIndex) {
+                        loadingText.style.opacity = 0;
+                        setTimeout(() => {
+                            loadingText.innerText = messages[nextMsgIndex].text;
+                            loadingText.style.opacity = 1;
+                        }, 150);
+                        currentMsgIndex = nextMsgIndex;
+                    }
+
+                    const progressPerHeart = 100 / totalHearts;
+
+                    for (let i = 0; i < totalHearts; i++) {
+                        const fillElement = document.getElementById(`fill-${i}`);
+                        const heartThreshold = (i + 1) * progressPerHeart;
+                        const prevThreshold = i * progressPerHeart;
+
+                        if (progress >= heartThreshold) {
+                            fillElement.style.clipPath = 'inset(0 0% 0 0)';
+                            fillElement.parentElement.classList.remove('is-active');
+                            if (!fillElement.classList.contains('completed')) {
+                                fillElement.classList.add('completed');
+                            }
+                        } else if (progress > prevThreshold) {
+                            const localPercent = ((progress - prevThreshold) / progressPerHeart) * 100;
+                            fillElement.style.clipPath = `inset(0 ${100 - localPercent}% 0 0)`;
+                            fillElement.parentElement.classList.add('is-active');
+                        } else {
+                            fillElement.style.clipPath = 'inset(0 100% 0 0)';
+                            fillElement.parentElement.classList.remove('is-active');
+                        }
+                    }
+
+                    currentFrame++;
+                    setTimeout(animateLoading, 1000 / frameRate);
+                } else {
+                    loadingText.style.opacity = 0;
+                    setTimeout(() => {
+                        loadingText.innerText = 'Ready! 💝';
+                        loadingText.style.opacity = 1;
+                        setTimeout(() => {
+                            loader.style.transition = 'opacity 0.6s ease-in-out';
+                            loader.style.opacity = 0;
+                            setTimeout(() => {
+                                loader.style.display = 'none';
+                            }, 600);
+                        }, 300);
+                    }, 150);
+                }
+            }
+            setTimeout(animateLoading, 300);
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, orderBy, query, updateDoc }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBACEwW7fOVyZ9daDBq3UgXMFJuL46V41I",
+            authDomain: "project-1-91922.firebaseapp.com",
+            projectId: "project-1-91922",
+            storageBucket: "project-1-91922.firebasestorage.app",
+            messagingSenderId: "13104108866",
+            appId: "1:13104108866:web:e7d5827a15a4cecf3fe4db",
+            measurementId: "G-F07B6JEDJS"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const sectionsRef = collection(db, "paragraphs");
+
+        let pendingDeleteId = null;
+        let editingId = null;
+
+        window.toggleAddModal = (show) => {
+            const m = document.getElementById('addModal');
+            if (show) { m.classList.add('active'); }
+            else {
+                m.classList.remove('active');
+                editingId = null;
+                document.getElementById('modalTitle').innerText = "New Page";
+                document.getElementById('sealButton').innerText = "Seal Page ✨";
+                document.getElementById("secTitle").value = "";
+                document.getElementById("secSalutation").value = "";
+                document.getElementById("secPara").value = "";
+                document.getElementById("secSign").value = "";
+            }
+        };
+
+        window.togglePassModal = (show) => {
+            const m = document.getElementById('passModal');
+            const errorDiv = document.getElementById('passError');
+            if (show) {
+                m.classList.add('active');
+                document.getElementById('delPass').focus();
+                errorDiv.style.display = 'none';
+            }
+            else {
+                m.classList.remove('active');
+                document.getElementById('delPass').value = '';
+                errorDiv.style.display = 'none';
+            }
+        };
+        window.closeDetail = () => document.getElementById('detailModal').classList.remove('active');
+
+        window.addSection = async () => {
+            const title = document.getElementById("secTitle").value.trim();
+            const salut = document.getElementById("secSalutation").value.trim();
+            const para = document.getElementById("secPara").value.trim();
+            const sign = document.getElementById("secSign").value.trim();
+
+            if (!title || !para) return alert("Fill in the blanks! 💖");
+
+            const idToUpdate = editingId;
+            toggleAddModal(false);
+
+            try {
+                if (idToUpdate) {
+                    await updateDoc(doc(db, "paragraphs", idToUpdate), { title, salutation: salut, text: para, signature: sign });
+                } else {
+                    await addDoc(sectionsRef, { title, salutation: salut, text: para, signature: sign, createdAt: Date.now() });
+                }
+            } catch (e) {
+                console.error("Save failed.", e);
+            }
+        };
+
+        const q = query(sectionsRef, orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const container = document.getElementById("messagesContainer");
+            container.innerHTML = "";
+            let items = [];
+            snapshot.forEach(docItem => { items.push({ id: docItem.id, ...docItem.data() }); });
+            
+            // Manual Sort: Pinned at top, then created date
+            items.sort((a, b) => {
+                if (a.pinned && !b.pinned) return -1;
+                if (!a.pinned && b.pinned) return 1;
+                return b.createdAt - a.createdAt;
+            });
+
+            items.forEach(data => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'section-item';
+                itemDiv.style.position = 'relative'; // Ensure we can position things
+                itemDiv.onclick = () => showPopUp(data, data.id);
+                itemDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="icon" style="background: ${getColorForId(data.id)}">
+                            <span class="material-icons-round">favorite</span>
+                        </div>
+                        <span class="label">${data.title}</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        ${data.pinned ? '<span class="material-icons-round" style="color: #F4D35E; font-size: 1.2rem; transform: rotate(-45deg);">push_pin</span>' : ''}
+                        <span class="material-icons-round" style="color: #EE964B; opacity: 0.6;">chevron_right</span>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        });
+
+        let activeData = null;
+        let activeId = null;
+
+        window.showPopUp = (data, id) => {
+            activeData = data;
+            activeId = id;
+            const detailModal = document.getElementById('detailModal');
+            const detailContent = document.getElementById('detailContent');
+            detailContent.innerHTML = `
+                <div class="important-card-popup">
+                    <button class="close-btn" onclick="closeDetail()"><span class="material-icons-round">close</span></button>
+                    <div class="card-header"><div class="h-icon"><span class="material-icons-round">favorite</span></div><h1 class="h-text">${data.title}</h1></div>
+                    <div class="inner-box">
+                        ${data.salutation ? `<div class="salut">${data.salutation}</div>` : ''}
+                        <div class="b-text">${data.text}</div>
+                        ${data.signature ? `<div class="sign">${data.signature}</div>` : ''}
+                    </div>
+                    
+                    <div style="display:flex; justify-content: space-between; align-items:center; margin-top: 1.5rem; border-top: 1px dashed rgba(217, 93, 57, 0.1); padding-top: 1.2rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div class="del-link" style="padding-top:0; border-top:0; margin-top:0;" onclick="handleDeleteClick('${id}')">
+                             <span class="material-icons-round" style="font-size: 1.1rem;">lock</span> Remove
+                        </div>
+                        <div class="del-link" style="padding-top:0; border-top:0; margin-top:0; color: #EE964B;" onclick="handleEditClick()">
+                             <span class="material-icons-round" style="font-size: 1.1rem;">edit</span> Edit
+                        </div>
+                        <div class="del-link" style="padding-top:0; border-top:0; margin-top:0; color: #F4D35E;" onclick="handlePinClick('${id}', ${data.pinned || false})">
+                             <span class="material-icons-round" style="font-size: 1.1rem; transform: ${data.pinned ? 'rotate(-45deg)' : 'none'}">push_pin</span> ${data.pinned ? 'Unpin' : 'Pin'}
+                        </div>
+                    </div>
+                </div>
+            `;
+            detailModal.classList.add('active');
+        };
+
+        window.handleEditClick = () => {
+             if (!activeData || !activeId) return;
+             editingId = activeId;
+             document.getElementById('modalTitle').innerText = "Edit Page";
+             document.getElementById('sealButton').innerText = "Update Page ✨";
+             document.getElementById('secTitle').value = activeData.title;
+             document.getElementById('secSalutation').value = activeData.salutation || '';
+             document.getElementById('secPara').value = activeData.text;
+             document.getElementById('secSign').value = activeData.signature || '';
+             closeDetail();
+             toggleAddModal(true);
+        };
+
+        window.handlePinClick = async (id, isPinned) => {
+             try {
+                 await updateDoc(doc(db, "paragraphs", id), { pinned: !isPinned });
+                 closeDetail();
+             } catch(e) { console.error("Pin failed", e); }
+        };
+
+        window.handleDeleteClick = (id) => {
+            pendingDeleteId = id;
+            togglePassModal(true);
+        };
+
+        window.verifyAndDelete = async () => {
+            const pass = document.getElementById('delPass').value;
+            const errorDiv = document.getElementById('passError');
+
+            if (pass === "1043") {
+                if (pendingDeleteId) {
+                    togglePassModal(false);
+                    closeDetail();
+                    try {
+                        await deleteDoc(doc(db, "paragraphs", pendingDeleteId));
+                        pendingDeleteId = null;
+                        errorDiv.style.display = 'none';
+                    } catch (e) {
+                        console.error("Delete failed.", e);
+                    }
+                }
+            } else {
+                errorDiv.style.display = 'block';
+                document.getElementById('delPass').value = '';
+                document.getElementById('delPass').focus();
+            }
+        };
+
+        function getColorForId(id) {
+            const colors = [
+                '#fff9c4', '#f8bbd0', '#dcedc8', '#ffe0b2', '#e1f5fe', 
+                '#f3e5f5', '#e8f5e9', '#fff3e0', '#fce4ec', '#f0f4c3'
+            ];
+            let hash = 0;
+            for (let i = 0; i < id.length; i++) {
+                hash = id.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const index = Math.abs(hash) % colors.length;
+            return colors[index];
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div'); heart.classList.add('heart'); heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw'; heart.style.fontSize = (Math.random() * 8 + 12) + 'px';
+            heart.style.animationDuration = (Math.random() * 4 + 6) + 's'; heart.style.opacity = Math.random() * 0.4 + 0.3;
+            document.body.appendChild(heart); setTimeout(() => heart.remove(), 8000);
+        }
+        setInterval(createHeart, 1200);
+    </script>
+</body>
+
+</html>

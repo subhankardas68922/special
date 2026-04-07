@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlock Memory 💕</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Nunito:wght@400;700&family=Shrikhand&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+            background-color: #fdf6e3;
+        }
+
+        .app {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Backgrounds from info.html */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #ffb3e6, transparent),
+                radial-gradient(2px 2px at 40px 70px, #ffe066, transparent),
+                radial-gradient(1px 1px at 90px 40px, #87ceeb, transparent),
+                radial-gradient(1px 1px at 130px 80px, #98fb98, transparent),
+                radial-gradient(2px 2px at 160px 30px, #ffb3e6, transparent);
+            background-size: 200px 100px;
+            animation: twinkle 3s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .grid-paper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 182, 193, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 182, 193, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        /* Falling Hearts */
+        .heart-particle {
+            position: fixed;
+            top: -10%;
+            color: rgba(217, 93, 57, 0.2);
+            user-select: none;
+            pointer-events: none;
+            z-index: 3;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        .page-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* Login Card - Journal/Sticky Note feel */
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(217, 93, 57, 0.12);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            transform: rotate(-1.5deg);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            z-index: 11;
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+        }
+
+        .lock-icon {
+            color: #EE964B;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .card-title {
+            font-family: 'Shrikhand', cursive;
+            color: #D95D39;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            font-family: 'Caveat', cursive;
+            color: #EE964B;
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        /* Input Group */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            font-family: 'Caveat', cursive;
+            color: #D95D39;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-align: left;
+            padding-left: 0.5rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 2px dashed #EE964B;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            color: #4a5568;
+            outline: none;
+            transition: all 0.3s;
+            text-align: center;
+            letter-spacing: 4px;
+        }
+
+        .input-field:focus {
+            background: white;
+            border-style: solid;
+            border-color: #D95D39;
+            transform: scale(1.02);
+        }
+
+        .error-msg {
+            color: #dc2626;
+            font-family: 'Caveat', cursive;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: none;
+            height: 1.5rem;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-8px);
+            }
+
+            40% {
+                transform: translateX(8px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        /* Button */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            width: 100%;
+            padding: 0.9rem 2rem;
+            border-radius: 9999px;
+            background: #D95D39;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(217, 93, 57, 0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.125rem;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            box-shadow: 0 15px 35px rgba(217, 93, 57, 0.5);
+            background: #B84A2A;
+            transform: translateY(-3px);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(217, 93, 57, 0.3);
+        }
+
+        .cta-button:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+        /* Blobs */
+        .float-blob {
+            position: absolute;
+            border-radius: 50%;
+            transition: transform 0.2s ease-out;
+            pointer-events: none;
+        }
+
+        .blob-1 {
+            top: 15%;
+            left: 10%;
+            width: 5rem;
+            height: 5rem;
+            background-color: #F4D35E;
+            opacity: 0.5;
+            animation: floatAnim 4s ease-in-out infinite;
+        }
+
+        .blob-2 {
+            bottom: 15%;
+            right: 10%;
+            width: 7rem;
+            height: 7rem;
+            background-color: #EE964B;
+            opacity: 0.4;
+            animation: floatAnim 5s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatAnim {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(-10px, -20px);
+            }
+        }
+
+        footer {
+            position: absolute;
+            bottom: 1.5rem;
+            width: 100%;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #9ca3af;
+            font-family: 'Caveat', cursive;
+            z-index: 10;
+        }
+
+        /* Success State */
+        .success-zoom {
+            transform: scale(0) rotate(10deg) !important;
+            opacity: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .page-container {
+                padding: 1rem 0.5rem;
+            }
+
+            .login-card {
+                padding: 2rem 1.5rem;
+                transform: rotate(0deg);
+                margin: 1rem 0;
+            }
+
+            .card-title {
+                font-size: 1.8rem;
+            }
+
+            .card-subtitle {
+                font-size: 1.25rem;
+            }
+
+            .lock-icon {
+                font-size: 2.8rem;
+            }
+
+            .cta-button {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .blob-1 {
+                width: 4rem;
+                height: 4rem;
+                top: 5%;
+            }
+
+            .blob-2 {
+                width: 5rem;
+                height: 5rem;
+                bottom: 5%;
+            }
+
+            footer {
+                position: relative;
+                padding-bottom: 1rem;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-height: 600px) {
+            footer {
+                position: relative;
+                padding-bottom: 1rem;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="stars-bg"></div>
+        <div class="grid-paper"></div>
+
+        <div id="blob1" class="float-blob blob-1"></div>
+        <div id="blob2" class="float-blob blob-2"></div>
+
+        <div class="page-container">
+            <div class="login-card" id="card">
+                <div class="card-header">
+                    <span class="material-icons-round lock-icon">favorite</span>
+                    <h1 class="card-title">Secret Entry</h1>
+                    <p class="card-subtitle">What date did we first meet in person? <br> (Ek special date... 💖)</p>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="input-wrapper">
+                        <label class="input-label">Enter the magic code:</label>
+                        <input type="password" id="password" class="input-field" placeholder="DDMMYY" maxlength="6"
+                            autocomplete="off" required>
+                    </div>
+
+                    <div id="errorMsg" class="error-msg">Oops! That's not the magic number 💔</div>
+
+                    <button type="submit" class="cta-button" id="submitBtn">
+                        Unlock Memories 💖
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+
+        </footer>
+    </div>
+
+    <script>
+        // Interactive Blobs
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            document.getElementById('blob1').style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            document.getElementById('blob2').style.transform = `translate(${x * -40}px, ${y * -40}px)`;
+        });
+
+        // Falling Hearts Generator
+        function createHeart() {
+            const heart = document.createElement('span');
+            heart.innerHTML = '❤️';
+            heart.classList.add('heart-particle');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            heart.style.duration = (Math.random() * 3 + 2) + 's';
+            heart.style.opacity = Math.random();
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 800);
+
+        // Login Logic
+        function handleLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const submitBtn = document.getElementById('submitBtn');
+            const card = document.getElementById('card');
+
+            errorMsg.classList.remove('show');
+            submitBtn.textContent = "Checking magic... ✨";
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                if (password === '090423') {
+                    submitBtn.innerHTML = "Success! Opening... 🌸";
+                    card.classList.add('success-zoom');
+
+                    setTimeout(() => {
+                        window.location.href = "lobby.html";
+                    }, 600);
+                } else {
+                    errorMsg.classList.add('show');
+                    submitBtn.textContent = "Unlock Memories 💖";
+                    submitBtn.disabled = false;
+                    document.getElementById('password').value = "";
+                    document.getElementById('password').focus();
+                }
+            }, 800);
+        }
+
+        // Clean error while typing
+        document.getElementById('password').addEventListener('input', () => {
+            document.getElementById('errorMsg').classList.remove('show');
+        });
+    </script>
+</body>
+
+</html>

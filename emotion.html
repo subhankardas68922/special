@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read This When... 💕</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Nunito:wght@400;700&family=Shrikhand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #fdf6e3;
+            --accent-primary: #D95D39;
+            --accent-secondary: #EE964B;
+            --text-main: #4a5568;
+            --paper-color: #ffffff;
+        }
+
+        /* ----- PREMIUM HEART SEQUENCE LOADER ----- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fdf6e3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loader-grid-paper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(217, 93, 57, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(217, 93, 57, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 2;
+            animation: moveGrid 20s linear infinite;
+        }
+        
+        @keyframes moveGrid {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+
+        .loader-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loading-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: #D95D39;
+            text-transform: none;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.6);
+            min-height: 2.5rem;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        .heart-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .loader-heart-item {
+            width: 38px;
+            height: 38px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-svg {
+            width: 38px;
+            height: 38px;
+            position: absolute;
+            stroke-width: 1.2;
+            stroke: #D95D39;
+            overflow: visible;
+        }
+
+        .heart-border {
+            fill: none;
+            opacity: 0.25;
+        }
+
+        .heart-filled {
+            fill: #D95D39;
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 0.1s linear;
+            z-index: 2;
+        }
+
+        .heart-filled.completed {
+            filter: drop-shadow(0 0 4px rgba(217, 93, 57, 0.5));
+            animation: popHeart 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popHeart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        .percentage {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-top: 10px;
+            color: #D95D39;
+        }
+
+        .is-active {
+            animation: pulse 0.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(217, 93, 57, 0.2)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(217, 93, 57, 0.5)); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #fdf6e3;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #EE964B;
+            border-radius: 10px;
+            border: 2px solid #fdf6e3;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D95D39;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Reusing backgrounds from lobby.html */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #ffb3e6, transparent),
+                radial-gradient(2px 2px at 40px 70px, #ffe066, transparent),
+                radial-gradient(1px 1px at 90px 40px, #87ceeb, transparent),
+                radial-gradient(1px 1px at 130px 80px, #98fb98, transparent),
+                radial-gradient(2px 2px at 160px 30px, #ffb3e6, transparent);
+            background-size: 200px 100px;
+            animation: twinkle 3s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .grid-paper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 182, 193, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 182, 193, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        .page-container {
+            position: relative;
+            z-index: 10;
+            padding: 1.5rem 1rem 4rem 1rem;
+            width: 100%;
+            max-width: 480px; /* Aligned with lobby.html */
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .hand-text {
+            display: block;
+            color: var(--accent-secondary);
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            transform: rotate(-2deg);
+            margin-bottom: 0.25rem;
+        }
+
+        .main-title {
+            font-family: 'Shrikhand', cursive;
+            color: var(--accent-primary);
+            font-size: clamp(2rem, 8vw, 3rem);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word; /* Prevent overflow on very narrow screens */
+        }
+
+        /* Navigation Buttons - Paper Strip Style */
+        .emotion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            width: 100%;
+        }
+
+        .emotion-button {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.75rem;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(217, 93, 57, 0.15);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+
+        .emotion-button:hover {
+            transform: translateX(4px) rotate(0.5deg);
+            background: #ffffff;
+            box-shadow: 5px 5px 0px 0px rgba(217, 93, 57, 0.1);
+        }
+
+        .emotion-button:active {
+            transform: scale(0.97) translateX(2px);
+        }
+
+        .emotion-button:nth-child(even) { transform: rotate(-0.5deg); }
+        .emotion-button:nth-child(odd) { transform: rotate(0.5deg); }
+
+        .icon-box {
+            background: #fff9c4;
+            color: var(--accent-primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .item-label {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+            font-weight: 700;
+            color: #444;
+            line-height:1.2;
+            /* ALLOW WRAPPING */
+        }
+
+        /* Message List Styling */
+        .message-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        /* Make it 3 columns on slightly wider "mobile" screens */
+        @media (min-width: 400px) {
+            .message-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .envelope-button {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px dashed var(--accent-secondary);
+            border-radius: 12px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.05);
+        }
+
+        .envelope-button:hover {
+            transform: translateY(-3px) rotate(-1deg);
+            background: #fff;
+            box-shadow: 4px 4px 0px 0px rgba(238, 150, 75, 0.1);
+        }
+
+        .envelope-button span:first-child {
+            font-size: 2rem !important; /* Smaller emoji for smaller screens */
+        }
+
+        .envelope-button .num-label {
+            font-family: 'Shrikhand', cursive;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+        }
+
+        /* Letter Styling */
+        .letter-container {
+            background: #fff;
+            padding: 2rem 1.25rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            width: 100%;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+            background-image: repeating-linear-gradient(transparent, transparent 31px, #f0f0f0 31px, #f0f0f0 32px);
+            line-height: 32px;
+            overflow-wrap: break-word;
+        }
+
+        .letter-text {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.3rem, 5vw, 1.6rem);
+            color: #444;
+            white-space: pre-line;
+            padding-top: 5px;
+        }
+
+        .letter-image {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 4px solid white;
+        }
+
+        /* Buttons */
+        .cta-button {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(217, 93, 57, 0.3);
+            font-size: 0.95rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(217, 93, 57, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .cta-button.secondary {
+            background: white;
+            color: var(--accent-primary);
+            border: 1px solid rgba(217, 93, 57, 0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .back-nav {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: white;
+            padding: 6px 10px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 0.8rem;
+            z-index: 100;
+        }
+
+        /* Hearts animation */
+        .heart {
+            position: fixed;
+            top: -5vh;
+            color: rgba(217, 93, 57, 0.15);
+            pointer-events: none;
+            z-index: 5;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        footer {
+            margin-top: 2rem;
+            font-family: 'Caveat', cursive;
+            color: #9ca3af;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 1;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- PREMIUM HEART SEQUENCE LOADER -->
+    <div id="loader">
+        <div class="loader-grid-paper"></div>
+        <div class="loader-container">
+            <div class="loading-text" id="loadingText">Gathering stars... ✨</div>
+            <div class="heart-bar" id="heartBar"></div>
+            <div class="percentage" id="percentText">0%</div>
+        </div>
+    </div>
+
+    <div class="stars-bg"></div>
+    <div class="grid-paper"></div>
+    
+    <div class="blob" style="top: 10%; right: -5%; width: 200px; height: 200px; background: #F4D35E;"></div>
+    <div class="blob" style="bottom: 10%; left: -5%; width: 250px; height: 250px; background: #EE964B;"></div>
+
+    <div class="page-container">
+        
+        <!-- View 1: Main Menu -->
+        <div id="main-view" class="w-full flex flex-col items-center">
+            <header class="header">
+                <span class="hand-text">how are you feeling?</span>
+                <h1 class="main-title">Open When...</h1>
+            </header>
+
+            <div id="emotion-list" class="emotion-list">
+                <!-- Buttons will be injected here -->
+            </div>
+            
+            <a href="lobby.html" class="back-nav" style="position: static; margin-top: 2.5rem;">
+                <span class="material-icons-round">arrow_back</span> Back to Lobby
+            </a>
+        </div>
+
+        <!-- View 2: Envelopes List -->
+        <div id="messages-view" class="hidden w-full flex flex-col items-center">
+            <a href="#" id="back-to-main" class="back-nav">
+                <span class="material-icons-round">arrow_back</span> Emotions
+            </a>
+            
+            <header class="header" style="margin-top: 1rem;">
+                <span class="hand-text" id="feeling-text">When you're</span>
+                <h1 class="main-title" id="emotion-title" style="font-size: 2.5rem;">Sad</h1>
+            </header>
+            
+            <p class="text-center italic opacity-60 mb-6 font-bold truncate">Pick a letter to heal your heart 💌</p>
+
+            <div id="messages-container" class="message-grid">
+                <!-- Message buttons will be injected here -->
+            </div>
+        </div>
+
+        <!-- View 3: Single Letter -->
+        <div id="letter-view" class="hidden w-full flex flex-col items-center">
+            <header class="header">
+                <span class="hand-text">a small message...</span>
+                <h1 class="main-title" id="letter-title" style="font-size: 2rem;">Letter #1</h1>
+            </header>
+            
+            <img id="letter-image" src="" alt="Cute GIF" class="letter-image">
+            
+            <div class="letter-container">
+                <p id="letter-content" class="letter-text"></p>
+            </div>
+
+            <div class="flex gap-4 w-full mt-10">
+                <button id="close-letter" class="cta-button secondary flex-1">
+                    <span class="material-icons-round">close</span> Close
+                </button>
+                <button id="next-message" class="cta-button flex-1">
+                    Next One <span class="material-icons-round">favorite</span>
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            Forever & Always ✨
+        </footer>
+    </div>
+
+    <script>
+        const messagesData = {
+            'sad': [
+                {
+                    text: `Tu meri life ki sabse important chapter hai ❤️. Agar tu sad hoti hai toh lagta hai jaise meri story ka poora page fade ho gaya ho. Main chahta hoon ki har page khushi aur love se bhara ho, tears se nahi. Tu meri jaan hai, meri priority hai aur meri reason to smile bhi. Baby, jo bhi chal raha hai wo temporary hai, lekin tu aur main permanent hain. Bas ek baar tu smile kar de 😊, aur mujhe lagne lagega ki duniya ki saari problems small hain kyunki meri jaan khush hai.`, 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif1.gif"
+                },
+                {
+                    text: `Mujhe pata hai abhi tu udaas hai, but ek baat yaad rakhna tu jitni strong aur pyari hai na💖, duniya ka koi problem tujhe tod nahi sakta. Aur main toh hamesha tere saath hoon hi,ek smile krde or text krde mujhe or Meri jaan tu soch bhi nahi sakti tera ek smile mujhe kitna peaceful feel karata hai😘. Agar tu sad hai toh meri smile chala jata hai. Chal ek deal karte hai, tu ek smile krke photo de, main tujhe ek surprise dunga😁.`, 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif2.gif"
+                },
+                {
+                    text: ` Mujhe bilkul nhi pasand honey jab tu sad hoti hai. Tu meri duniya ki sabse pyaari insaan hai💗, aur tera smile meri sabse badi khushi. Ek baar bas thoda sa smile krde aur dekhna meri jaan  tera mood bhi light ho jaayega aur mera dil bhi shant ho jayega.Jab tu sad hoti hai, mujhe lagta hai ki main bas tujhe hug karke sab problem khatam kar du 🫂. Tu meri jaan hai honey, aur meri jaan udaas ho toh mera dil bhi udaas ho jata hai😘.`, 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif3.gif"
+                },
+                {
+                    text: `Honeyy, mujhe pata hai tu abhi sad feel kar rahi hai, lekin tujhe ek baat bataun? Jab tu sad hoti hai na, mujhe lagta hai jaise duniya ka sabse sundar colour chupp gaya ho . Tu meri life ki sabse cute aur pyaari insaan hai ✨, aur tera khushi mera khushi hai 😘. Agar tu thoda sa bhi smile kar degi na 💖, toh  tujhe aaj aur kal dono din extra pamper karunga 🤗. Tu meri jaan hai, aur meri jaan ko udaas dekhna mujhe bilkul nahi 🥹💕.`, 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif4.gif"
+                },
+                { 
+                    text: " Meri jaan 💫 mujhe pata hai aaj thoda hard day tha aur tu udaas feel kar rahi ho. Par ek cheez yaad rakhna tu itni pyaari aur special ho ki duniya ke small problems ko bhi easily handle kar sakti ho ❤️. Ek baar tu thodi si smile karegi to tujhe lagega jaise sab kuch thik ho jayega . i love you 😘 ", 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif5.gif" 
+                },
+                {
+                    text: "i know tu sad hai mere waja se. honey tu bas yeh yaad kar ki kitne ache moments humne saath me jeeye hain😘🫂. Har ek memory tujhe yaad dilayegi ki tu meri life ka best decision hai. Tere saath rehkar mujhe lagta hai ki main lucky hoon, aur tu meri duniya ko complete karti hai. So, please apni smile wapas le aana, kyunki wo hi meri strength hai💫.", 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif6.gif"
+                },
+                { 
+                    text: "Meri jaan, aaj ka din thoda tough lag raha hai, aur mujhe lagta hai tu bhi thodi pareshan ho. Par yaad rakh, har situation temporary hoti hai, aur sab cheeze dhire dhire better ho jaati hai ❤️. Thoda relax kar aur apne aap ko thoda time de, bas yehi kaafi hai ki din phir se normal lage 😌 Thoda time hum dono ke liye dedicate kar, aur dekh kaise din phir se mood sahi aur positive ho jaye😘🫂..", 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif7.gif" 
+                },
+                { 
+                    text: "Main janta hu ki aaj tu upset feel kar rahi hai, lekin bas ek baar soch ki tu meri life me kitni important hai. Tere bina meri duniya adhuri hai, aur tu hi meri khushi ka asli reason hai. Main chahta hoon ki tu hamesha yaad rakhe kyuki tu jitni special hai mere liye, utna shayad main words me kabhi express bhi na kar pau. Isliye sad rehna tere liye allowed hi nahi, meri jaan.", 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif4.gif" 
+                },
+                { 
+                    text: "yaar honey, tera upar dukhi hona sobha nhi deta h. itni pyari si ladki hai meri or sad ho raha hai🤨. main tujhe apni duniya ka center bana chuka hu. Tu meri first thought hai subah uthte hi aur last thought hai raat ko sone se pehle. ab tu sad hoke rahega toh mujhe kitna bura lagega baby. smile meri jaan tere pe suit nhi krta sad hona 💫😘 .", 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif2.gif" 
+                },
+                { 
+                    text: "sweetheart 💗, tujhe sad dekh kar mujhe bilkul acha nahi lagta.Tu meri life ka wo part hai jisse mai sabse zyada pyar karta hu. Tu meri chhoti badi khushiya ka reason hai,Agar tu sad rahegi toh mujhe lagta hai jaise mai apna sabse precious treasure kho diya hoon. Please meri jaan, thoda smile kar, tu smile karti hai toh mera dil shnat ho jata hai🤗😘.", 
+                    image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif1.gif" 
+                },
+            ],
+            'happy': [
+                { text: " Hey there, you know every message from you makes me happy. Even a simple “good morning” or “good night” from you can turn my whole day around. I love how you share your days with me, even the little things, and how we can make each other laugh or smile through a screen. Those small moments mean a lot lot to me because they remind me that we are together, no matter the distance. .", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif8.gif" },
+                { text: "I just want to take a moment to tell you how much you mean to me. Being away from you is really hard, but it also makes me realize how lucky I am to have you in my life. Even though we are miles apart, you are always close to my heart. I think about you all the time  your smile, your laugh, your voice, the way you make even small things feel special, Thank you so much honey 🫂. Please always stay with your bunny 🙂.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif9.gif" },
+                { text: "Tbh, think I’m addicted to you to your smile, your eyes, your stupid talks, and every little thing you do. we could talk for hours and still its not enough for me,even just a photo of you is enough to leave me craving for more. You have spoiled me with your love idiot, and i don’t want to go back to the way i was before.you’re my favorite addiction.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif10.gif" },
+                { text: "From the very first moment you have felt like home to me. Not a place not a building, but a place made of love, comfort, and safety. even when we are apart just your call or your message gives me peace. you calm my heart, you make me feel safe and you remind me that i am never be alone as long as I have you. ", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif11.gif" },
+                { text: "I love how much you care for me, and the kind of person you are makes my life happier, brighter, and calmer every day 🤗😽. You’ve helped me become a better version of myself, and without even realizing it, you’ve filled me with so much positivity and confidence. You’re the most beautiful part of my life 🤭🤭. Just talking to you makes me happy, and even your texts can make me smile. Always remember, you hold the happiest, brightest, and most special part of my life.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif12.gif" },
+                { text: "you are the person who have my whole heart💖, the person whom I trust the most,the person who is always there for me no matter I ask for that or not. You mean so much to me,I thought that often but since you know I'm bad at expressing so I can't put that into words and the importance you have in my life can't be expressed in just some words.You hold a very special place in my life and heart too✨💗.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif1.gif" },
+                { text: "Tbh,i don’t know how you did this to me, but you have completely taken over my heart. your laugh, your little habits, the way you talk without any second thoughts, even the way you look at me it all drive me crazy in the best way. we could talk for hours, and I would still want more. Just seeing your face, even in photo, makes me melt and want you even more.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif7.gif" },
+                { text: "I'm really, really lucky to have found a loyal, beautiful, caring, sweet girl like you, and I can't wait to create even more beautiful memories together.I really feel special when you share every small things and you take permissions for something it's  feels me like I'm your husband 😘💖..", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif4.gif" },
+                { text: " text me and say you are happy i will make you more 😁😏", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif7.gif" },
+                { text: "Every time I think about you, I realize how much you’ve changed my life in such a beautiful way. Before you, things were just normal, but after you, everything feels brighter and more meaningful. I love the way you make me laugh even when I don’t feel like smiling, and how you bring peace to my heart just by being yourself. You don’t have to do anything extra, because your presence alone is enough to make me feel complete. ", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif22.gif" }, 
+            ],
+            'angry': [
+                { text: "I know you are angry right now and it hurts to see that things between us is now like this, if i did something wrong, I am truly sorry honey i never want to be the reason that hurt you. You are not just my bestest friend, you are family to me and i care about you more than my words can say. Please don’t keep it all inside  talk to me when you feel ready. I just want us to be okay again because our bond means too much don't let anger and misunderstanding come between us...", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif13.gif" },
+                { text: "Hey sunshine, I know you are mad at me right now but honestly i don't like seeing you this way at all. You are such an important person of my life and  you are upset with me, it feels like something is missing . I admit I might make mistakes sometimes but I never mean to hurt you. you ae really special to me and that's why i just want you to let go of the anger and bring back my beautiful honey because your anger doesn't suit you, but your smile is my absolute favorite thing to see❤️.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif14.gif" },
+                { text: "I know I upset you and I’m taking full responsibility for that, but I can’t imagine  your angry face because it’s way cuter when you’re smiling.. 😅 Come on, don’t stay mad at me for too long. You’re way too special to me to see you upset, and I just want my favorite person back, I don’t want to lose even a moment of us over this. . So , forgive me please boss❤️.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif15.gif" },
+                { text: "I know I upset you right now and i feel really bad about it. you mean so much to me and i never want to hurt you so honey please don't stay mad for too long because I am already missing your smile . You are the only one who makes my days brighter and I can't wait to see you happy again.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif9.gif" },
+                { text: "Even when you are angry on me you are still my favorite person but honestly your smile suits you much better then your mad face. Please forgive me and let's get back to being us. I don’t want to waste a single moment being apart when all I want is you close.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif14.gif" },
+                { text: "Even when you are angry with me still i can't stop loving you but the truth is i miss your laughter, your teasing, and the way you make everything better. Fights will happen but i don't want a single fight or misunderstanding to take away a single day of our happiness. You're too special to me and i don't want to waste our time on anger when we could be making funny together. So please let's talk it out let's forgive each other and let's choose love over everthing else", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif16.gif" },
+                { text: "Your anger scares me not because you will shout but because it makes me realize how much you will get hurt. i don't want to lose the connection we share. Yes I mess up sometimes but my feelings for you will never change. Please don't let this fight define us. Let's forgive, let's love and let's promise to never give up on each other, no matter what happens", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif17.gif" },
+                { text: "honey i know i hurt you and i can't face this pain of your silence. Please understand you are the most precious part of my life and i would never knowingly break your heart. you make me feel alive in ways no one else can and So please let's forgive, forget, and come back stronger together because i only want us together forever ", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif18.gif" },
+                { text: "I hate this distance between us even if it's just because of a small fight. You are not just my bestest friend, my secret keeper, my everything. when you are angry it feels like my whole world is upside down. i never want to let ego or anger come between us because nothing is worth losing you. qll I want is to hold you and remind you how much you mean to me.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif8.gif" },
+                { text: " I know you are upset with me right now and i don't blame you for it,  maybe i said or did something wrong but please believe me when i say my heart never meant to hurt you. You are not just my besest friend, you are my home, my safe place and the one person i can never imagine my life without. when you are angry it feels like the whole world goes dark for me because your smile is my sunshine so i call you that. Please forgive me, baby… I will do anything to see that beautiful smile on your face again ", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif4.gif" }
+            ],
+            'overthinking': [
+                { text: "Hey  I can tell you might be overthinking, so I just want to pause and say everything’s okay , whatever you’re feeling or thinking,  I’m not upset and I’m not going anywhere, so you don’t have to worry about things getting complicated between us. If I did something that made you uncomfortable or upset, I’m truly sorry and I promise I’ll do my best to make it right, because I care about you too much to let this hang over us 💖.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif19.gif" },
+                { text: "I love how much you care for me, and the kind of person you are makes my life happier, brighter, and calmer every day 🤗😽. You’ve helped me become a better version of myself, and without even realizing it, you have filled me with so much positivity and confidence. You’re the most beautiful part of my life 🤭🤭. Just talking to you makes me happy, and even your texts can make me smile. Always remember, you hold the happiest, brightest, and most special part of my life.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif4.gif" },
+                { text: "Honey you know, You bring a sweetness to my life that words can't describe. It's like having a constant supply of happiness and joy. your laughter is the music that fills my ears and your love is the most precious gift I've ever received. I cherish the way you understand me without words, the way you support me and the way you light up even the darkest corners of my world. You are, without a doubt, the most wonderful person I've ever known. don't overthink dumbfuck, you're mine and i'm all yours 😁.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif7.gif" },
+                { text: "You are dangerous,you know that? you can make my heart race without even trying. one little ditry message from you or one cute photo and I am hooked again. i can’t get enough of you, and honestly, I don’t want to. You’re mine, and I am never letting go.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif23.gif" },
+                { text: "So stop overthinking my babygirl, stop stressing, and let yourself to smile for a moment. close your eyes, breathe, and remember that you are loved more than you can imagine. you make me happier than i can ever say, and i just want to do the same for you. you don’t need to worry about anything. your thoughts, your feelings, even your doubts. you are my favorite person, my safe place, and the one who makes my world brighter.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif1.gif" },
+                { text: "Stop overthinking for a minute and just remember this i’m Always with you. nothing you feel or think, could ever make me love you less. you are my girl, my world, and everything about you is perfect to me even your worries.whatever you are thinking or worrying about, i have got you. just breathe, smile.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif24.gif" },
+                { text: "I understand your heart worries a lot and sometimes you feel insecure about little things but baby you don't need to overthink when it comes to your bunny. If you could see yourself through my eyes you will realize how awesome you are for me. i don't want you to waste your beautiful mind on doubts because my love for you is unshakable. No matter how loud your thoughts get, I will always choose you, every single time.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif26.gif" },
+                { text: "I don't want you to waste another second overthinking because my heart is already yours. You don't have to compete, compare, or doubt yourself you are exactly what I prayed for and i will never take you for granted. when your mind makes you restless let my words be your reminder. you are safe, you are loved, and you will never be alone as long as I am here.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif9.gif" },
+                { text: "I know you overthink because you care and that shows how much love you carry in your heart but please don't let your thoughts hurt you. you don't need to question your worth or my feelings because you are my peace, my happiness and my favorite person. every time your thoughts scare you just remember you are loved, you are wanted, and you are mine always", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif7.gif" },
+                { text: "I know your are overthinking things but listen to me carefully you are enough, you are more than enough and you don't have to doubt my love for you even for a second. no matter what your thoughts tell you, nothing changes the fact that you are the most precious person to me. my love isn’t going anywhere, my feelings aren’t changing, and I will always be here to remind you that you are my one and only", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif2.gif" }
+            ],
+            'you miss me': [
+                { text: "I miss you every day. Not the big kind of missing only at night, but little misses all day long. I miss your messages when they do not come. I miss the sound of your laugh in a short voice note. I miss the small things you do that make me feel calm and safe. Even small things matter so much when we are far apart, i'm missing you right now honey.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif20.gif" },
+                { text: "HEYY HEYY, Even though we can’t be together right now, I feel close to you in all the little ways we share our lives. Our late night talks, the photos we send each other, the silly memes, and even a small conversations they all mean so much. They make me feel like you are right here with me, holding my hand and sitting in your permanent place and smiling at me. send me text baby even if we are not talking after a fight.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif21.gif" },
+                { text: "Hey, I want you to know that I am here for you. Always. Even when life is hard, I will be here. I will listen when you need me, laugh with you when things are fun, and hold you in my thoughts when we cannot hold each other physically. I promise to love you in every little way I can  through texts, calls, pictures, and every memory we make until the day we don’t have to be apart😁. .", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif4.gif" },
+                { text: "Sometimes I catch myself smiling for no reason, and then I realize it's because I am thinking about you.Your laugh, your teasing, the way you look at me. I can’t wait to hold you, kiss you, and feel your warmth. You have taken my heart, my mind, and my soul  and I don’t want them back. You are mine, and I love it. Missing you so much...", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif10.gif" },
+                { text: "I miss you too more than you can imagine, every little thing around me reminds me of you and i find myself smiling just thinking about our moments together. Distance might keep us apart physically but in my heart you are right here with me. Soon we will be together again and until then just remember you are never out of my thoughts not even for a second...", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif5.gif" },
+                { text: "I know you are missing me honey and i am missing you too. It's hard not having you here to hold but i carry you with me everywhere I go. every time my phone lights up with your name it feels like a small piece of you reaching out to me. this distance is only temporary but our love is permanent. Soon, we will make up for all the time apart...", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif23.gif" },
+                { text: "I know you are missing me my sunshine but i want you to remember that i am missing you too with the same intensity,, every second feels incomplete without your presence and i keep imagining how beautiful it will be when we finally meet again. Until that day keep me in your heart the way I keep you in mine, safe and close forever..", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif24.gif" },
+                { text: "Even though i am not physically there with you i want you to feel my presence around you when you miss me just remember that I am thinking about you at the same time because no matter how far we are we are still each other's favorite place.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif8.gif" },
+                { text: "Whenever you miss me just imagine I am holding you tightly in my arms. you are my first thought i wake up and the last one before I sleep. Even we are miles apart, you are always with me in spirit. This waiting is tough but I know our love is stronger than the distance💖", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif1.gif" },
+                { text: "I know you are missing me sweetheart but remember I am missing you just the same maybe even more. every little thing reminds me of you and I can't help but smile thinking about us we i see any picture of you. distance may keep us apart right now but nothing can stop my heart from feeling close to yours. Soon, we will turn this missing into moments together.", image: "https://raw.githubusercontent.com/subhankardas68922/img-gif-special/main/gif7.gif" }
+            ]
+        };
+
+        const emojis = {
+            'sad': '🥺',
+            'happy': '🥰',
+            'angry': '😤',
+            'overthinking': '🌀',
+            'you miss me': '🫂'
+        };
+
+        const mainView = document.getElementById('main-view');
+        const emotionList = document.getElementById('emotion-list');
+        const messagesView = document.getElementById('messages-view');
+        const emotionTitle = document.getElementById('emotion-title');
+        const messagesContainer = document.getElementById('messages-container');
+        const letterView = document.getElementById('letter-view');
+        const letterTitle = document.getElementById('letter-title');
+        const letterImage = document.getElementById('letter-image');
+        const letterContent = document.getElementById('letter-content');
+        const backToMain = document.getElementById('back-to-main');
+        const closeLetterButton = document.getElementById('close-letter');
+        const nextMessageButton = document.getElementById('next-message');
+
+        let currentEmotion = null;
+        let currentMessageIndex = 0;
+
+        function renderEmotionButtons() {
+            emotionList.innerHTML = Object.keys(messagesData).map(emotion => {
+                const capitalizedEmotion = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+                return `
+                    <button class="emotion-button" data-emotion="${emotion}">
+                        <div class="icon-box">
+                            <span>${emojis[emotion] || '❤️'}</span>
+                        </div>
+                        <span class="item-label">When you're ${capitalizedEmotion}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderMessages(emotion) {
+            currentEmotion = emotion;
+            const capitalizedEmotion = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+            emotionTitle.innerText = capitalizedEmotion;
+            
+            messagesContainer.innerHTML = messagesData[emotion].map((_, index) => `
+                <div class="envelope-button" onclick="openLetter('${emotion}', ${index})">
+                    <span style="font-size: 2.5rem;">💌</span>
+                    <span class="num-label">Letter #${index + 1}</span>
+                </div>
+            `).join('');
+        }
+
+        window.openLetter = function (emotion, index) {
+            currentMessageIndex = index;
+            const message = messagesData[emotion][index];
+            letterTitle.innerText = `Letter #${index + 1}`;
+            letterImage.src = message.image;
+            letterContent.innerText = message.text;
+            messagesView.classList.add('hidden');
+            letterView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        emotionList.addEventListener('click', (e) => {
+            const btn = e.target.closest('.emotion-button');
+            if (btn) {
+                const emotion = btn.dataset.emotion;
+                mainView.classList.add('hidden');
+                messagesView.classList.remove('hidden');
+                renderMessages(emotion);
+            }
+        });
+
+        backToMain.addEventListener('click', (e) => {
+            e.preventDefault();
+            messagesView.classList.add('hidden');
+            mainView.classList.remove('hidden');
+        });
+
+        closeLetterButton.addEventListener('click', () => {
+            letterView.classList.add('hidden');
+            messagesView.classList.remove('hidden');
+        });
+
+        nextMessageButton.addEventListener('click', () => {
+            currentMessageIndex = (currentMessageIndex + 1) % messagesData[currentEmotion].length;
+            openLetter(currentEmotion, currentMessageIndex);
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 8 + 12) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.opacity = Math.random() * 0.4 + 0.1;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+        setInterval(createHeart, 1200);
+
+        document.addEventListener('DOMContentLoaded', renderEmotionButtons);
+
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const heartBar = document.getElementById('heartBar');
+            const percentText = document.getElementById('percentText');
+            const loadingText = document.getElementById('loadingText');
+            const totalHearts = 7;
+            const duration = 1500;
+            const frameRate = 30;
+            const totalFrames = (duration / 1000) * frameRate;
+            let currentFrame = 0;
+
+            const messages = [
+                { thresh: 0, text: 'Gathering stars... ✨' },
+                { thresh: 40, text: 'Folding letters... 💌' },
+                { thresh: 75, text: 'Preparing memories... 💖' },
+                { thresh: 94, text: 'Almost there... 🎀' }
+            ];
+
+            const heartPath = "M11 21.5 C11 21.5 2 13.5 4 7 C5 3 9.5 2.5 11.5 6 C11.5 6 14.5 1 19.5 4 C23 6.5 19 14 11 21.5 Z";
+            
+            for (let i = 0; i < totalHearts; i++) {
+                const heartContainer = document.createElement('div');
+                heartContainer.className = 'loader-heart-item';
+                heartContainer.innerHTML = `
+                    <svg class="heart-svg heart-border" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="${heartPath}"></path>
+                    </svg>
+                    <svg class="heart-svg heart-filled" id="fill-${i}" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="${heartPath}"></path>
+                    </svg>
+                `;
+                heartBar.appendChild(heartContainer);
+            }
+
+            let currentMsgIndex = 0;
+
+            function animateLoading() {
+                if (currentFrame <= totalFrames) {
+                    const t = currentFrame / totalFrames;
+                    const easedProgress = t * (2 - t);
+                    const progressMath = Math.min(Math.round(easedProgress * 100), 100);
+                    const progress = progressMath;
+                    percentText.innerText = progress + '%';
+
+                    let nextMsgIndex = currentMsgIndex;
+                    for (let i = messages.length - 1; i >= 0; i--) {
+                        if (progress >= messages[i].thresh) {
+                            nextMsgIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (nextMsgIndex !== currentMsgIndex) {
+                        loadingText.style.opacity = 0;
+                        setTimeout(() => {
+                            loadingText.innerText = messages[nextMsgIndex].text;
+                            loadingText.style.opacity = 1;
+                        }, 150);
+                        currentMsgIndex = nextMsgIndex;
+                    }
+
+                    const progressPerHeart = 100 / totalHearts;
+
+                    for (let i = 0; i < totalHearts; i++) {
+                        const fillElement = document.getElementById(`fill-${i}`);
+                        const heartThreshold = (i + 1) * progressPerHeart;
+                        const prevThreshold = i * progressPerHeart;
+
+                        if (progress >= heartThreshold) {
+                            fillElement.style.clipPath = 'inset(0 0% 0 0)';
+                            fillElement.parentElement.classList.remove('is-active');
+                            if (!fillElement.classList.contains('completed')) {
+                                fillElement.classList.add('completed');
+                            }
+                        } else if (progress > prevThreshold) {
+                            const localPercent = ((progress - prevThreshold) / progressPerHeart) * 100;
+                            fillElement.style.clipPath = `inset(0 ${100 - localPercent}% 0 0)`;
+                            fillElement.parentElement.classList.add('is-active');
+                        } else {
+                            fillElement.style.clipPath = 'inset(0 100% 0 0)';
+                            fillElement.parentElement.classList.remove('is-active');
+                        }
+                    }
+
+                    currentFrame++;
+                    setTimeout(animateLoading, 1000 / frameRate);
+                } else {
+                    loadingText.style.opacity = 0;
+                    setTimeout(() => {
+                        loadingText.innerText = 'Ready! 💝';
+                        loadingText.style.opacity = 1;
+                        setTimeout(() => {
+                            loader.style.transition = 'opacity 0.6s ease-in-out';
+                            loader.style.opacity = 0;
+                            setTimeout(() => {
+                                loader.style.display = 'none';
+                            }, 600);
+                        }, 300);
+                    }, 150);
+                }
+            }
+            setTimeout(animateLoading, 300);
+        });
+    </script>
+</body>
+
+</html>

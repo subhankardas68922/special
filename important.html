@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Heart To Yours</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Nunito:wght@400;700&family=Shrikhand&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'retro-yellow': '#F4D35E',
+                        'retro-pink': '#EE964B',
+                        'retro-green': '#8DA399',
+                        'primary': '#D95D39',
+                        'primary-hover': 'rgb(184, 74, 42)',
+                        'lavender': '#C8B6E2',
+                        'mint': '#A8E6CF',
+                    },
+                    fontFamily: {
+                        'hand': ['Caveat', 'cursive'],
+                        'display': ['Shrikhand', 'serif'],
+                        'body': ['Nunito', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'retro': '0 10px 40px -10px rgba(0, 0, 0, 0.1), 0 2px 10px -2px rgba(0, 0, 0, 0.05)',
+                        'retro-hover': '0 15px 45px -12px rgba(0, 0, 0, 0.15), 0 4px 15px -4px rgba(0, 0, 0, 0.08)',
+                        'button': '0 8px 20px -6px rgba(217, 93, 57, 0.4)',
+                        'button-hover': '0 12px 28px -8px rgba(217, 93, 57, 0.6)',
+                    },
+                    animation: {
+                        'seal-spin': 'spinSeal 1.4s ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fdf6e3;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        @keyframes spinSeal {
+            0% {
+                transform: rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+
+            50% {
+                transform: rotate(180deg) scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(3deg);
+            }
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .floating-icon {
+            position: absolute;
+            animation: float 7s ease-in-out infinite;
+            opacity: 0.12;
+            font-size: 3.5rem;
+        }
+
+        .star {
+            position: absolute;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #A8E6CF20;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #A8E6CF, #C8B6E2);
+            border-radius: 4px;
+        }
+
+        /* ----- PREMIUM HEART SEQUENCE LOADER ----- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fdf6e3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loader-grid-paper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(217, 93, 57, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(217, 93, 57, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 2;
+            animation: moveGrid 20s linear infinite;
+        }
+        
+        @keyframes moveGrid {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+
+        .loader-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loading-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: #D95D39;
+            text-transform: none;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.6);
+            min-height: 2.5rem;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        .heart-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .loader-heart-item {
+            width: 38px;
+            height: 38px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-svg {
+            width: 38px;
+            height: 38px;
+            position: absolute;
+            stroke-width: 1.2;
+            stroke: #D95D39;
+            overflow: visible;
+        }
+
+        .heart-border {
+            fill: none;
+            opacity: 0.25;
+        }
+
+        .heart-filled {
+            fill: #D95D39;
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 0.1s linear;
+            z-index: 2;
+        }
+
+        .heart-filled.completed {
+            filter: drop-shadow(0 0 4px rgba(217, 93, 57, 0.5));
+            animation: popHeart 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popHeart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        .percentage {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-top: 10px;
+            color: #D95D39;
+        }
+
+        .is-active {
+            animation: pulse 0.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(217, 93, 57, 0.2)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(217, 93, 57, 0.5)); }
+        }
+
+        /* ----- ROBUST SHADOW SYSTEM ----- */
+        .premium-shadow {
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1), 0 2px 10px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .button-glow {
+            box-shadow: 0 8px 20px -6px rgba(217, 93, 57, 0.5) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .button-glow:hover {
+            box-shadow: 0 12px 28px -8px rgba(217, 93, 57, 0.7) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        .button-glow:active {
+            transform: translateY(0px) !important;
+            box-shadow: 0 4px 10px -2px rgba(217, 93, 57, 0.4) !important;
+        }
+    </style>
+
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- PREMIUM HEART SEQUENCE LOADER -->
+    <div id="loader">
+        <div class="loader-grid-paper"></div>
+        <div class="loader-container">
+            <div class="loading-text" id="loadingText">Gathering stars... ✨</div>
+            <div class="heart-bar" id="heartBar"></div>
+            <div class="percentage" id="percentText">0%</div>
+        </div>
+    </div>
+
+    <!-- Floating Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="floating-icon" style="top: 8%; left: 12%; animation-delay: 0s;">🌙</div>
+        <div class="floating-icon" style="top: 65%; left: 8%; animation-delay: 2s;">☁️</div>
+        <div class="floating-icon" style="top: 15%; right: 18%; animation-delay: 1s;">⭐</div>
+        <div class="floating-icon" style="bottom: 18%; right: 12%; animation-delay: 3s;">✨</div>
+        <div class="floating-icon" style="top: 45%; left: 5%; animation-delay: 4s;">🌸</div>
+        <div class="floating-icon" style="bottom: 45%; right: 8%; animation-delay: 1.5s;">💫</div>
+
+        <div class="star text-yellow-300 text-xs" style="top: 20%; left: 30%; animation-delay: 0s;">★</div>
+        <div class="star text-yellow-300 text-xs" style="top: 60%; left: 70%; animation-delay: 1s;">★</div>
+        <div class="star text-yellow-300 text-xs" style="top: 80%; left: 20%; animation-delay: 2s;">★</div>
+        <div class="star text-yellow-300 text-xs" style="top: 30%; right: 25%; animation-delay: 0.5s;">★</div>
+    </div>
+
+    <main class="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-12 px-4">
+
+        <div class="text-center mb-12 relative z-10">
+            <span class="block text-retro-pink font-hand text-2xl rotate-[-1deg] mb-2">To my favorite human...</span>
+            <h1 class="text-4xl md:text-6xl font-display text-primary drop-shadow-sm tracking-tight leading-tight">
+                For My Bestest Friend
+            </h1>
+        </div>
+
+        <div class="w-full max-w-4xl bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-sm rounded-2xl p-4 sm:p-8 premium-shadow border-2 border-primary/30"
+            id="letter-container">
+            <!-- Content switches here -->
+        </div>
+
+    </main>
+
+    <!-- Seal Overlay -->
+    <div id="seal-overlay"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-md hidden">
+        <div class="flex flex-col items-center gap-4">
+            <div class="text-7xl animate-seal-spin drop-shadow-lg">💌</div>
+            <div class="text-xl font-hand text-primary">Sealing with love...</div>
+        </div>
+    </div>
+
+    <script>
+        let isSealed = false;
+
+        const letterContainer = document.getElementById('letter-container');
+        const sealOverlay = document.getElementById('seal-overlay');
+
+        function renderContent() {
+            if (isSealed) {
+                const dateStr = new Date().toLocaleDateString("en-US", {
+                    weekday: "long", year: "numeric", month: "long", day: "numeric"
+                });
+
+                letterContainer.innerHTML = `
+                    <div class="text-center space-y-6">
+                        <div class="mx-auto w-24 h-24 rounded-full bg-gradient-to-br from-mint to-lavender flex items-center justify-center shadow-retro">
+                            <div class="text-5xl">💝</div>
+                        </div>
+                        <div>
+                            <h2 class="text-3xl font-display text-primary mb-2">Message Sent!</h2>
+                            <p class="text-lg text-gray-600 font-body">Hope this made you smile</p>
+                        </div>
+                        <div class="flex flex-wrap justify-center gap-2 my-6">
+                            ${[...Array(7)].map((_, i) => `<span class="material-icons-round text-2xl text-primary animate-pulse" style="animation-delay: ${i * 140}ms">favorite</span>`).join('')}
+                        </div>
+                        <div class="bg-white/50 rounded-xl p-6 mb-6">
+                            <div class="text-2xl font-hand text-primary mb-2">You're Pretty Awesome ✨</div>
+                            <div class="text-sm text-gray-500 font-body">${dateStr}</div>
+                        </div>
+                        <div class="flex justify-center">
+                            <button onclick="handleRestart()" class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-primary text-white font-bold button-glow hover:bg-primary-hover transition-all">
+                                Read Again ✨
+                                <span class="material-icons-round">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                letterContainer.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white shadow-retro">
+                                <span class="material-icons-round">favorite_border</span>
+                            </div>
+                            <h3 class="text-2xl font-display text-primary">A Note For You</h3>
+                        </div>
+                        
+                        <div class="bg-white/60 rounded-xl p-6 font-hand text-lg leading-relaxed space-y-4 text-gray-800 border border-primary/20">
+                            <p class="text-primary font-bold text-xl">Hey Honey,</p>
+
+                            <p class="text-gray-700">Yeh message dhyaan se padhna, jab bhi lage sab kuch thoda heavy ho raha hai.</p>
+
+                            <p class="text-gray-700">Tum jaanti ho na tum mere liye important ho… par main shayad kabhi properly bol nahi paata. Tum jaisi ho na… waise log bohot kam hote hain. Tum genuinely feel karti ho, bina pretend kiye… aur kisi ke liye itna real hona aaj kal easy nahi hota. Bas problem yeh hai ki tum har cheez dil se leti ho. Chhoti si cheez bhi tumhe affect kar deti hai, aur phir tum usko andar hi andar carry karti rehti ho. Kabhi bolti nahi, bas feel karti rehti ho. Isliye aaj main tumhe kuch important bolna chahta hoon… sirf aaj ke liye nahi, tumhari poori life ke liye.</p>
+
+                            <p class="text-gray-700 font-medium">Tum jaanti ho na tum mere liye important ho… par main shayad kabhi properly bol nahi paata. Tum jaisi ho na… waise log bohot kam hote hain. Tum genuinely feel karti ho, bina pretend kiye… aur kisi ke liye itna real hona aaj kal easy nahi hota. Bas problem yeh hai ki tum har cheez dil se leti ho. Chhoti si cheez bhi tumhe affect kar deti hai, aur phir tum usko andar hi andar carry karti rehti ho. Kabhi bolti nahi, bas feel karti rehti ho. Isliye aaj main tumhe kuch important bolna chahta hoon… sirf aaj ke liye nahi, tumhari poori life ke liye.</p>
+
+                            <p class="text-gray-700">Life kabhi bhi perfect nahi hoti. Bahut baar tum apna 100% dogi, dil se chahogi… phir bhi tumhe woh nahi milega jo tum chahti ho. Aur uss time lagega ki sab galat ho raha hai, unfair hai… aur sach bolu toh haan, life kabhi kabhi unfair hoti hai. Lekin yahi reality hai. Tumhe accept karna padega. Compromise karna padega. Har cheez tumhare according nahi hogi. Har situation tumhare control mein nahi hogi. Aur yeh weakness nahi hai… yeh maturity hai. Kabhi kabhi tumhe situations ke saath adjust karna padega, logon ke saath adjust karna padega, aur apni expectations ko bhi thoda change karna padega. Yeh hi life hai… dheere dheere samajh aata hai.</p>
+
+
+                            <p class="text-gray-700 font-medium">Aur ek baat dhyaan se suno… Agar kabhi main tumhare saath nahi raha… agar life hume alag direction mein le gayi… toh main yeh nahi chahta ki tum ruk jao. Main nahi chahta ki tum kisi ek insaan ya ek memory ke chakkar mein apni life ko hold pe rakh do. Tumhe accept karna hoga… aur aage badhna hoga. Tumhari life bohot badi hai kisi ek insaan se, kisi ek feeling se, kisi ek moment se. Abhi tumhe lag raha hoga ki jo tum feel karti ho wahi sab kuch hai… lekin aage bohot kuch hai jo tumne abhi dekha hi nahi.</p>
+
+
+                            <p class="text-gray-700 font-medium">Tum ro sakti ho, sad ho sakti ho… yeh sab normal hai. Lekin please uss sadness mein hamesha ke liye mat rehna. Promise karo mujhe… chahe kuch bhi ho jaaye, tum khud ko kabhi give up nahi karogi. Tum strong ho itna accept karne ke liye… aur brave ho itna ki aage badh sako. Aur chahe life mein kuch bhi ho jaaye… main hamesha yahi chahunga.</p>
+
+                            <p class="text-gray-700 font-medium">Tum khush raho, tum strong raho, aur kabhi rukna mat.</p>
+
+                            <p class="text-primary font-bold">Tumara Bunny.</p>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-between gap-4 items-center pt-4">
+                            <div class="text-sm text-gray-600 font-hand">Grateful you're in my life ✌️</div>
+                            <div class="flex gap-3">
+                                <button onclick="handleSeal()" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-white font-bold button-glow hover:bg-primary-hover transition-all">
+                                    Seal It 💌
+                                    <span class="material-icons-round">favorite</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function handleSeal() {
+            sealOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                isSealed = true;
+                sealOverlay.classList.add('hidden');
+                renderContent();
+            }, 1400);
+        }
+
+        function handleRestart() {
+            isSealed = false;
+            renderContent();
+        }
+
+        // Initialize
+        renderContent();
+
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const heartBar = document.getElementById('heartBar');
+            const percentText = document.getElementById('percentText');
+            const loadingText = document.getElementById('loadingText');
+            const totalHearts = 7;
+            const duration = 1500;
+            const frameRate = 30;
+            const totalFrames = (duration / 1000) * frameRate;
+            let currentFrame = 0;
+
+            const messages = [
+                { thresh: 0, text: 'Gathering stars... ✨' },
+                { thresh: 40, text: 'Folding letters... 💌' },
+                { thresh: 75, text: 'Preparing memories... 💖' },
+                { thresh: 94, text: 'Almost there... 🎀' }
+            ];
+
+            const heartPath = "M11 21.5 C11 21.5 2 13.5 4 7 C5 3 9.5 2.5 11.5 6 C11.5 6 14.5 1 19.5 4 C23 6.5 19 14 11 21.5 Z";
+            
+            for (let i = 0; i < totalHearts; i++) {
+                const heartContainer = document.createElement('div');
+                heartContainer.className = 'loader-heart-item';
+                heartContainer.innerHTML = `
+                    <svg class="heart-svg heart-border" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="${heartPath}"></path>
+                    </svg>
+                    <svg class="heart-svg heart-filled" id="fill-${i}" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="${heartPath}"></path>
+                    </svg>
+                `;
+                heartBar.appendChild(heartContainer);
+            }
+
+            let currentMsgIndex = 0;
+
+            function animateLoading() {
+                if (currentFrame <= totalFrames) {
+                    const t = currentFrame / totalFrames;
+                    const easedProgress = t * (2 - t);
+                    const progressMath = Math.min(Math.round(easedProgress * 100), 100);
+                    const progress = progressMath;
+                    percentText.innerText = progress + '%';
+
+                    let nextMsgIndex = currentMsgIndex;
+                    for (let i = messages.length - 1; i >= 0; i--) {
+                        if (progress >= messages[i].thresh) {
+                            nextMsgIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (nextMsgIndex !== currentMsgIndex) {
+                        loadingText.style.opacity = 0;
+                        setTimeout(() => {
+                            loadingText.innerText = messages[nextMsgIndex].text;
+                            loadingText.style.opacity = 1;
+                        }, 150);
+                        currentMsgIndex = nextMsgIndex;
+                    }
+
+                    const progressPerHeart = 100 / totalHearts;
+
+                    for (let i = 0; i < totalHearts; i++) {
+                        const fillElement = document.getElementById(`fill-${i}`);
+                        const heartThreshold = (i + 1) * progressPerHeart;
+                        const prevThreshold = i * progressPerHeart;
+
+                        if (progress >= heartThreshold) {
+                            fillElement.style.clipPath = 'inset(0 0% 0 0)';
+                            fillElement.parentElement.classList.remove('is-active');
+                            if (!fillElement.classList.contains('completed')) {
+                                fillElement.classList.add('completed');
+                            }
+                        } else if (progress > prevThreshold) {
+                            const localPercent = ((progress - prevThreshold) / progressPerHeart) * 100;
+                            fillElement.style.clipPath = `inset(0 ${100 - localPercent}% 0 0)`;
+                            fillElement.parentElement.classList.add('is-active');
+                        } else {
+                            fillElement.style.clipPath = 'inset(0 100% 0 0)';
+                            fillElement.parentElement.classList.remove('is-active');
+                        }
+                    }
+
+                    currentFrame++;
+                    setTimeout(animateLoading, 1000 / frameRate);
+                } else {
+                    loadingText.style.opacity = 0;
+                    setTimeout(() => {
+                        loadingText.innerText = 'Ready! 💝';
+                        loadingText.style.opacity = 1;
+                        setTimeout(() => {
+                            loader.style.transition = 'opacity 0.6s ease-in-out';
+                            loader.style.opacity = 0;
+                            setTimeout(() => {
+                                loader.style.display = 'none';
+                            }, 600);
+                        }, 300);
+                    }, 150);
+                }
+            }
+            setTimeout(animateLoading, 300);
+        });
+    </script>
+</body>
+
+</html>
